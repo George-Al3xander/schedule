@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --clr-primary: rgba(39,111,159,255);
+    --clr-secondary: #68ceb6;
+    --clr-accent: 'white';
+}
+
+.active {
+   background-color: var(--clr-secondary);
+   color: var(--clr-primary)
+}
+

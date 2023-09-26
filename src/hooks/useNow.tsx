@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
-import schedule from "../scheldueDb.json"
+import schedule from "../scheduleDb.json"
 import { typeSubject } from "../types/types";
-
-
+import { useDispatch } from "react-redux";
+import { setBusyStatus } from "../redux/mainStates";
+import {useSelector} from "react-redux"
+import { RootState } from "../redux/store";
 
 
 export const useNow = (today: Date) => {
-    const isNumerator = false;
-    
+    const dispatch = useDispatch()
+    const {isNumerator} = useSelector((state: RootState) => state.mainStates)
     const [currentSubject, setCurrentSubject] = useState<typeSubject | null>();
     const todaySchedule = schedule.days[today.getDay()].subjects!.filter((subj) => {
         let status = false;
@@ -26,24 +28,21 @@ export const useNow = (today: Date) => {
             let status = false;
             //Checks if classes continiues in same hour
             if(subj.time.hours == today.getHours()) {
-                if(subj.time.minutes == 30 && today.getMinutes() >= 30) {
+                if(today.getMinutes() >= subj.time.minutes) {
                     status = true;
-                } else if (subj.time.minutes == 0 && today.getMinutes() >= 0) {
-                    status = true;
-                }
+                } 
                 //Checks if classes continiues in different hour
             } else if(today.getHours() - subj.time.hours == 1){
-                if(subj.time.minutes == 30 && today.getMinutes() <= 50) {                    
+                if(today.getMinutes() <= subj.time.minutes + 20) {                    
                     status = true;
-                } else if (subj.time.minutes != 30 && today.getMinutes() <= 20) {
-                    status = true;
-                }
+                } 
             }
             return status
         });       
-        if(currentCheck.length > 0) {          
+        if(currentCheck.length > 0) {     
             setCurrentSubject(currentCheck[0])                      
-        } else {
+            dispatch(setBusyStatus({status: true}))
+        } else {            
             const onlyFuture = todaySchedule!.filter((subj) => {
                 let status = false;
                 if(subj.time.hours >= today.getHours()) {
@@ -56,6 +55,7 @@ export const useNow = (today: Date) => {
             } else {
                 setCurrentSubject(null)
             }           
+            dispatch(setBusyStatus({status: false}))
         }
 
     }
