@@ -7,24 +7,21 @@
                 "time": {
                     "hours": 9,
                     "minutes": 30
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Історія та культура України",
                 "time": {
                     "hours": 11,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Вступ до спеціальності",
                 "time": {
                     "hours": 13,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             }
         ]},
         {"subjects": [
@@ -41,24 +38,21 @@
                 "time": {
                     "hours": 9,
                     "minutes": 30
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Дискертна математика",
                 "time": {
                     "hours": 11,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Лінійна алгебра",
                 "time": {
                     "hours": 13,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             }            
         ]},
         {"subjects": [
@@ -67,24 +61,21 @@
                 "time": {
                     "hours": 8,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Іноземна мова",
                 "time": {
                     "hours": 9,
                     "minutes": 30
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Дискертна математика",
                 "time": {
                     "hours": 11,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Історія та культура України",
@@ -109,32 +100,28 @@
                 "time": {
                     "hours": 9,
                     "minutes": 30
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Іноземна мова",
                 "time": {
                     "hours": 11,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Кураторська година",
                 "time": {
                     "hours": 13,
                     "minutes": 0
-                },
-                "isNumerator": true
+                }                
             },
             {
                 "name": "Основи обчислювальної техніки",
                 "time": {
                     "hours": 14,
                     "minutes": 30
-                },
-                "isNumerator": true
+                }                
             }            
         ]},
         {},

@@ -7,5 +7,5 @@ export type typeSubject = {
         hours: number,
         minutes: number
     },
-    isNumerator: boolean
+    isNumerator?: boolean
 }
