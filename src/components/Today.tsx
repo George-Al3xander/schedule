@@ -25,18 +25,18 @@ const Today = () => {
     })
     new Date().toLocaleString('en-us', {  weekday: 'long' })
 
-    return(<table className="w-[100%]">
+    return(<table className="w-[100%] ">
         <thead>
-            <tr className="flex- justify-between">
-                <th>Time</th>
-                <th>Subject</th>
+            <tr className="flex text-left border-b-[3px] italic opacity-80 border-primary px-2">
+                <th className="basis-[100%]">Time</th>
+                <th className="basis-[100%]">Subject</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody className="flex flex-col">
             {todaySchedule.map((subj) => {
-                return <tr className="flex- justify-between">
-                    <td>{<DisplayTime hours={subj.time.hours} minutes={subj.time.minutes}/>}</td>
-                    <td>{subj.name}</td>
+                    return <tr className={`flex font-bold text-left border-[3px] p-2 border-primary ${todaySchedule.indexOf(subj) % 2 == 0 ? "bg-primary" : ""} ${(now && busyStatus)? JSON.stringify(now) == JSON.stringify(subj) ? "text-red-500" : "" : ""}`}>
+                    <td className="basis-[100%]">{<DisplayTime hours={subj.time.hours} minutes={subj.time.minutes}/>}</td>
+                    <td className="basis-[100%]">{subj.name}</td>
                 </tr>
             })}
         </tbody>
