@@ -21,7 +21,7 @@ const Now = () => {
         } else {
             status = true
         }
-        return true
+        return status
     }) : []
     
    

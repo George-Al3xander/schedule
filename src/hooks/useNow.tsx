@@ -20,7 +20,7 @@ export const useNow = (today: Date) => {
         } else {
             status = true
         }
-        return true
+        return status
     }) : []
 
     const getClosest = () => {        

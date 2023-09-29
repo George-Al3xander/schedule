@@ -8,7 +8,6 @@ import DisplayTime from "./DisplayTime";
 
 
 const Today = () => {
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const today = useToday();
     const now =  useNow(today);
     const {busyStatus, isNumerator} = useSelector((state: RootState) => state.mainStates)
@@ -21,7 +20,7 @@ const Today = () => {
         } else {
             status = true
         }
-        return true
+        return status
     }) : []
     new Date().toLocaleString('en-us', {  weekday: 'long' })
 
