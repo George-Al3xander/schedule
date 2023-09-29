@@ -11,7 +11,7 @@ export const useNow = (today: Date) => {
     const dispatch = useDispatch()
     const {isNumerator} = useSelector((state: RootState) => state.mainStates)
     const [currentSubject, setCurrentSubject] = useState<typeSubject | null>();
-    const todaySchedule = schedule.days[today.getDay()].subjects!.filter((subj) => {
+    const todaySchedule = schedule.days[today.getDay()].subjects ? schedule.days[today.getDay()].subjects!.filter((subj) => {
         let status = false;
         if(subj.isNumerator != undefined) {
             if(subj.isNumerator == isNumerator) {
@@ -21,7 +21,7 @@ export const useNow = (today: Date) => {
             status = true
         }
         return true
-    })
+    }) : []
 
     const getClosest = () => {        
         const currentCheck = todaySchedule!.filter((subj) => { 
@@ -61,7 +61,9 @@ export const useNow = (today: Date) => {
     }
     
     useEffect(() => {
-        getClosest()        
+        if(schedule.days[today.getDay()].subjects) {
+            getClosest()   
+        }
     },[today])
 
     return currentSubject

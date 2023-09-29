@@ -1,13 +1,12 @@
-import { useState} from 'react'
-import { useToday } from './hooks/useToday'
-import {Routes, Route} from "react-router-dom"
+import {Routes, Route, useLocation} from "react-router-dom"
 import Nav from './components/Nav';
 import Now from './components/Now';
 import Today from './components/Today';
 import Week from './components/Week';
 
 function App() {
-  return (<div className="w-[min(90%,40rem)] mx-auto py-6 h-[100vh]  bg-gray-100">
+  const location = useLocation(); 
+  return (<div className={`w-[min(90%,40rem)] mx-auto py-6 ${location.pathname == "/week" ? "min-" : ""}h-[100vh]  bg-gray-100`}>
     <Nav />
     <Routes>
       <Route path='/' element={<Now />}/>
