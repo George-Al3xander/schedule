@@ -1,7 +1,13 @@
 {
     "time": {
-        "breakLength": 10,
-        "classLength": 80
+        "breakLength": {
+            "hours": 0,
+            "minutes": 10
+        },
+        "classLength":{
+            "hours": "0",
+            "minutes": 90
+        }
     },
     "days": [        
         {},
