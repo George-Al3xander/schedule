@@ -1,4 +1,8 @@
 {
+    "time": {
+        "breakLength": 10,
+        "classLength": 80
+    },
     "days": [        
         {},
         {"subjects": [

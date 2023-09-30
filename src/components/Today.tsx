@@ -4,7 +4,8 @@ import { useToday } from "../hooks/useToday"
 import schedule from "../scheduleDb.json"
 import { RootState } from "../redux/store";
 import DisplayTime from "./DisplayTime";
-
+import { useNavigate } from "react-router-dom";
+import {useEffect} from "react"
 
 
 const Today = () => {
@@ -21,9 +22,14 @@ const Today = () => {
             status = true
         }
         return status
-    }) : []
+    }) : [];
+    const navigate = useNavigate();
+    useEffect(() =>{
+        if(todaySchedule.length == 0) {
+            navigate("/")
+        }
+    }, [])
     new Date().toLocaleString('en-us', {  weekday: 'long' })
-
     return(<table className="w-[100%] ">
         {todaySchedule.length > 0 ? 
             <>

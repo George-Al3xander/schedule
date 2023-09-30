@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import schedule from "../scheduleDb.json"
 import { typeSubject } from "../types/types";
 import { useDispatch } from "react-redux";
 import { setBusyStatus } from "../redux/mainStates";
@@ -8,10 +7,11 @@ import { RootState } from "../redux/store";
 
 
 export const useNow = (today: Date) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const {schedule} = useSelector((state: RootState) => state.mainStates)
     const {isNumerator} = useSelector((state: RootState) => state.mainStates)
     const [currentSubject, setCurrentSubject] = useState<typeSubject | null>();
-    const todaySchedule = schedule.days[today.getDay()].subjects ? schedule.days[today.getDay()].subjects!.filter((subj) => {
+    const todaySchedule = (schedule && schedule.days[today.getDay()].subjects) ? schedule.days[today.getDay()].subjects!.filter((subj) => {
         let status = false;
         if(subj.isNumerator != undefined) {
             if(subj.isNumerator == isNumerator) {
@@ -61,7 +61,7 @@ export const useNow = (today: Date) => {
     }
     
     useEffect(() => {
-        if(schedule.days[today.getDay()].subjects) {
+        if(schedule && schedule.days[today.getDay()].subjects) {
             getClosest()   
         }
     },[today])

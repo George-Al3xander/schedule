@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
+import { typeSchedule } from '../types/types'
 
 interface MainStates {
     busyStatus: boolean,
-    isNumerator: boolean
+    isNumerator: boolean,
+    schedule: typeSchedule | null
 
 }
 
 
 const initialState: MainStates = {
     busyStatus: false,
-    isNumerator: false
+    isNumerator: false,
+    schedule: null
 }
 
 export const mainSlice = createSlice({
@@ -23,10 +26,13 @@ export const mainSlice = createSlice({
         setIsNumerator: (state, action: PayloadAction<{status: boolean}>) => {
             state.isNumerator = action.payload.status
         },
+        setSchedule: (state, action: PayloadAction<{schedule: typeSchedule}>) => {
+            state.schedule = action.payload.schedule
+        },
     }
 })
 
-export const {setBusyStatus, setIsNumerator} = mainSlice.actions
+export const {setBusyStatus, setIsNumerator, setSchedule} = mainSlice.actions
 
 export const selectInfo = (state: RootState) => state.mainStates
 export default mainSlice.reducer

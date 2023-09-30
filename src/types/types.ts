@@ -9,3 +9,11 @@ export type typeSubject = {
     },
     isNumerator?: boolean
 }
+
+export type typeSchedule = {
+    time: {
+        breakLength: number,
+        classLength: number
+    },
+    days: {subjects: typeSubject[]}[]  
+}
