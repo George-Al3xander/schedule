@@ -11,23 +11,7 @@ import { useToday } from "../hooks/useToday";
 
 const LandingPage = () => {
     const dispatch = useDispatch();    
-    const exportJson = (file: object) => {        
-        const fileName = "my-file";
-        const json = JSON.stringify(file, null, 2);
-        const blob = new Blob([json], { type: "application/json" });
-        const href = URL.createObjectURL(blob);
-      
-        // create "a" HTLM element with href to file
-        const link = document.createElement("a");
-        link.href = href;
-        link.download = fileName + ".json";
-        document.body.appendChild(link);
-        link.click();
-      
-        // clean up "a" element & remove ObjectURL
-        document.body.removeChild(link);
-        URL.revokeObjectURL(href);
-        }
+    
        // result.time != && result.time.breakLength && result.time.classLength && result.days.length > 0 && result.days[0].subjects.length > 0
         async function importJson(e: any) {     
             const file = e.target.files[0]     
@@ -35,18 +19,19 @@ const LandingPage = () => {
             fileReader.onload = event => {
                 if(event.target?.result != null && typeof event.target.result == "string") {
                     const result : typeSchedule =  JSON.parse(event.target.result);   
-                    console.log(result)
-                    if(result.time && result.time.breakLength.hours && result.time.classLength.hours  && result.days.length > 0) {                
-                        dispatch(setSchedule({schedule: result}))
+                    
+                    if(result.time != undefined && result.time.breakLength.hours != undefined && result.time.classLength.hours != undefined  && result.days.length > 0) {                
+                        dispatch(setSchedule({schedule: result}));
+                        localStorage.setItem("schedule", JSON.stringify(result))
                     } else {                        
                         alert("Wrong json file format!")
                     }              
                 }
             }
-            fileReader.onerror = error => alert("Wrong json file format!")
+            fileReader.onerror =() => alert("Wrong json file format!BROOO")
             fileReader.readAsText(file)          
         }
-        const today = useToday();
+        
 
         
         
