@@ -13,22 +13,16 @@ function App() {
   const {schedule} = useSelector((state: RootState) => state.mainStates) 
   
   
-  const [isReady, setIsReady] = useState(false)
+
   
   
-  useEffect(() => {    
-      const localStorageItem = JSON.parse(localStorage.getItem('schedule')!);
-        
+  useEffect(() => {   
+    const localStorageItem = JSON.parse(localStorage.getItem('schedule')!);        
     if(localStorageItem)  {
       dispatch(setSchedule({schedule: localStorageItem}))
-    }
-    
+    }    
   }, [])
 
-  useEffect(() => {
-    console.log(isReady)
-
-  }, [isReady])
 
 
   return (<div className={`w-[min(90%,40rem)] mx-auto py-6 ${location.pathname == "/week" ? "min-" : ""}h-[100vh]  bg-gray-100`}>    

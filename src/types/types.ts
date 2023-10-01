@@ -15,5 +15,5 @@ export type typeSchedule = {
         breakLength: typeTime,
         classLength: typeTime
     },
-    days: {subjects: typeSubject[]}[]  
+    days: {subjects?: typeSubject[]}[]  
 }

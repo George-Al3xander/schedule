@@ -5,7 +5,7 @@
             "minutes": 10
         },
         "classLength":{
-            "hours": "0",
+            "hours": 0,
             "minutes": 90
         }
     },
