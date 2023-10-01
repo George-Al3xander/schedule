@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setBusyStatus } from "../redux/mainStates";
 import {useSelector} from "react-redux"
 import { RootState } from "../redux/store";
+import moment from "moment";
 
 
 export const useNow = (today: Date) => {
@@ -23,26 +24,39 @@ export const useNow = (today: Date) => {
         return status
     }) : []
 
-    const getClosest = () => {        
-        const currentCheck = todaySchedule!.filter((subj) => { 
-            let status = false;
-            //Checks if classes continiues in same hour
-            if(subj.time.hours == today.getHours()) {
-                if(today.getMinutes() >= subj.time.minutes) {
-                    status = true;
-                } 
-                //Checks if classes continiues in different hour
-            } else if(today.getHours() - subj.time.hours == 1){
-                if(today.getMinutes() <= subj.time.minutes + 20) {                    
-                    status = true;
-                } 
+    function getTimeRemaining(endtime: Date){ 
+        const total = Date.parse(endtime.toString()) - Date.parse(today.toString());           
+        const minutes = Math.floor( (total/1000/60) % 60 );
+        const hours = Math.floor( (total/(1000*60*60)) % 24 );            
+      
+        return {hours,minutes};
+    }
+
+
+    const isStillContinue = (startHours: number, startMinutes: number) => {
+        const starttime = new Date();
+        starttime.setHours(startHours);
+        starttime.setMinutes(startMinutes);        
+        const starttimeCheck = moment(starttime).isBefore(moment(today))        
+        if(starttimeCheck) {
+            const endtime =moment(starttime).add(schedule?.time.classLength.hours, "hours").add(schedule?.time.classLength.minutes, "minutes").toDate();
+            const timeLeft = getTimeRemaining(endtime);         
+            if(timeLeft.hours > 0 && timeLeft.minutes > 0) {
+                return true
+            } else {
+                return false
             }
-            return status
-        });       
+        } else {
+            return false
+        }
+    } 
+
+    const getClosest = () => {        
+        const currentCheck = todaySchedule!.filter((subj) => isStillContinue(subj.time.hours, subj.time.minutes));       
         if(currentCheck.length > 0) {     
             setCurrentSubject(currentCheck[0])                      
             dispatch(setBusyStatus({status: true}))
-        } else {            
+        } else {                    
             const onlyFuture = todaySchedule!.filter((subj) => {
                 let status = false;
                 if(subj.time.hours >= today.getHours()) {

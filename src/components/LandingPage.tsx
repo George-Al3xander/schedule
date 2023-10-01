@@ -1,14 +1,16 @@
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { setSchedule } from "../redux/mainStates";
 import scheduleDb from "../scheduleDb.json"
 import { typeSchedule } from "../types/types";
 import {Routes, Route, NavLink} from "react-router-dom"
 import Settings from "./Settings";
+import { useToday } from "../hooks/useToday";
+
 
 
 
 const LandingPage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch();    
     const exportJson = (file: object) => {        
         const fileName = "my-file";
         const json = JSON.stringify(file, null, 2);
@@ -44,9 +46,11 @@ const LandingPage = () => {
             fileReader.onerror = error => alert("Wrong json file format!")
             fileReader.readAsText(file)          
         }
-        
-    return(<div >
+        const today = useToday();
 
+        
+        
+    return(<div >        
         <div className="bg-primary text-accent p-2">
             <h1 className="font-bold text-xl italic uppercase">Schedule Uni</h1>
         </div>

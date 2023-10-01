@@ -1,7 +1,7 @@
 import {useLocation} from "react-router-dom"
 
 
-import {useEffect, useState} from "react"
+import {useEffect} from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import { setSchedule } from "./redux/mainStates";
@@ -25,7 +25,7 @@ function App() {
 
 
 
-  return (<div className={`w-[min(90%,40rem)] mx-auto py-6 ${location.pathname == "/week" ? "min-" : ""}h-[100vh]  bg-gray-100`}>    
+  return (<div className={`w-[min(90%,40rem)] mx-auto py-6 ${location.pathname == "/week" || location.pathname == "/settings"? "min-" : ""}h-[100vh]  bg-gray-100`}>    
     {schedule ? <Dashboard /> : <LandingPage />
     }
   </div>    
