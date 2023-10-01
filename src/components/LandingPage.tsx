@@ -10,10 +10,12 @@ import Settings from "./Settings";
 
 
 const LandingPage = () => {
+    const blankSchedule : typeSchedule = {time: {breakLength: {hours: 0, minutes: 0}, classLength: {hours: 0, minutes: 0}},days: [{},{},{},{},{},{},{}]};
+
     const dispatch = useDispatch();    
     const location = useLocation();
        // result.time != && result.time.breakLength && result.time.classLength && result.days.length > 0 && result.days[0].subjects.length > 0
-        async function importJson(e: any) {     
+    async function importJson(e: any) {     
             const file = e.target.files[0]     
             const fileReader = new FileReader()
             fileReader.onload = event => {
@@ -30,7 +32,25 @@ const LandingPage = () => {
             }
             fileReader.onerror =() => alert("Wrong json file format!BROOO")
             fileReader.readAsText(file)          
-        }
+    }
+
+    const exportJson = (file: typeSchedule) => {        
+        const fileName = "sampleSchedule";
+        const json = JSON.stringify(file, null, 2);
+        const blob = new Blob([json], { type: "application/json" });
+        const href = URL.createObjectURL(blob);
+      
+        // create "a" HTLM element with href to file
+        const link = document.createElement("a");
+        link.href = href;
+        link.download = fileName + ".json";
+        document.body.appendChild(link);
+        link.click();
+      
+        // clean up "a" element & remove ObjectURL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+    }
         
 
         
@@ -58,11 +78,11 @@ const LandingPage = () => {
                 </div>
                 <p className="mb-4">Please, choose a way of setting up a schedule: </p>              
                     <li className="mb-2">Manually building it through <NavLink className={"underline"} to={"/settings"}>settings</NavLink></li>
-                    <li>
+                    <li className="mb-2">
                         Import ready json file
                         <input onChange={importJson} accept=".json" type="file" />
                     </li>
-
+                    <button onClick={() => exportJson(blankSchedule)} className="opacity-60 text-orange-600">Click to download  json sample file</button>
                 
             </div>
             <div className="flex justify-center mt-10">

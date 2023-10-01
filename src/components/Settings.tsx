@@ -105,7 +105,7 @@ const Settings = () => {
         // clean up "a" element & remove ObjectURL
         document.body.removeChild(link);
         URL.revokeObjectURL(href);
-        }
+    }
     useEffect(() => {
         //console.log(formSchedule)
     }, [formSchedule])
