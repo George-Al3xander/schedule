@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { setSchedule } from "../redux/mainStates";
+import { useNumerator } from "../hooks/useNumerator";
 
 
 
@@ -15,7 +16,7 @@ const Settings = () => {
     const {schedule} = useSelector((state: RootState) => state.mainStates);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    
+    const isNumerator = useNumerator()
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name.split('-')        
         const value = e.target.value;
@@ -56,7 +57,12 @@ const Settings = () => {
            tempArray.days[dayIndex].subjects![subjIndex] = subj
            setFormSchedule(tempArray)           
         } else if(name[0] == "numerator") {
-            //localStorage.getItem("isNumerator")
+            let status = true;
+            if(value == 'false') {
+                status = false
+                console.log("Here")
+            }
+            localStorage.setItem("numerator", JSON.stringify({status, start: new Date()}))
         }
         
     }
@@ -108,10 +114,11 @@ const Settings = () => {
             <legend>Time & Numerator</legend>
             <div className="flex flex-col">
                 <div className="mb-4">
+                    <span className="block opacity-60 text-sm">*Changes immediately, without save</span>
                     <label htmlFor="">Is this week a numerator: </label>
                     <select onChange={handleChange} name="numerator" id="">                       
-                        <option value="true">true</option>
-                        <option value="false">false</option>
+                        <option selected={isNumerator ? true : false} value="true">true</option>
+                        <option selected={!isNumerator ? true : false} value="false">false</option>
                     </select>
                 </div>
                 <div className="flex justify-between">
@@ -136,15 +143,15 @@ const Settings = () => {
             return <fieldset className="border-dotted border-4 p-2 mb-4">
                     <legend>{dayNames[formSchedule.days.indexOf(day)]}</legend>
                     {day.subjects != undefined ? day.subjects.map((subj, index) => {
-                        return <div className="flex gap-2 border-y-2 border-t-primary mb-2 py-2">
-                            <input  onChange={handleChange} name={`subj-${formSchedule.days.indexOf(day)}-${index}-name`}   className="basis-[100%]" placeholder="Class name" defaultValue={subj.name} type="text" />
-                            <div  className="basis-[100%]">
+                        return <div className="flex gap-4 pr-4 border-y-2 border-t-primary mb-2 py-2 flex-wrap relative">
+                            <input  onChange={handleChange} name={`subj-${formSchedule.days.indexOf(day)}-${index}-name`}  placeholder="Class name" defaultValue={subj.name} type="text" />
+                            <div  className="">
                                 <label>Time: </label>
                                 <span className="bg-accent p-1 rounded"><input  name={`subj-${formSchedule.days.indexOf(day)}-${index}-time-hours`} onChange={handleChange} defaultValue={subj.time.hours} type="number" min={0} max={23}/>h</span>
                                 <span className="bg-accent p-1 rounded"><input  name={`subj-${formSchedule.days.indexOf(day)}-${index}-time-minutes`} onChange={handleChange} defaultValue={subj.time.minutes} type="number" min={0} max={60}/>m</span>
                             </div>
 
-                            <div  className="basis-[100%]">
+                            <div  className="">
                                 <label htmlFor="">Numerator: </label>
                                 <select name={`subj-${formSchedule.days.indexOf(day)}-${index}-numerator`} onChange={handleChange}  id="">
                                     <option value="none">None</option>
@@ -152,26 +159,27 @@ const Settings = () => {
                                     <option value="false">False</option>
                                 </select>
                             </div>
-                            <svg onClick={() => deleteSubject(formSchedule.days.indexOf(day), index)}  className="basis-[100%] max-w-[1.5rem]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>
+                            <button  onClick={() => deleteSubject(formSchedule.days.indexOf(day), index)} className="max-w-[1.5rem] absolute right-0"><svg className="w-[1.5rem]"    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg></button>
                         </div>  
                     }) : <h2 className="opacity-60">No subjects for that day</h2>}   
                     <div className="flex py-2">
                         <button onClick={() => addEmptySubject(index)} className="mx-auto text-green-600 px-4">Add</button>   
                     </div>
                 </fieldset>
-        })}
+            })}
             <div className="flex flex-col gap-2">    
-                <button onClick={() => exportJson(schedule!)} disabled={localStorageItem ? false : true} className="text-orange-500 hover:bg-orange-500 hover:text-accent w-[25rem] p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Save current schedule as JSON file</button>
+                <button onClick={() => exportJson(schedule!)} disabled={localStorageItem ? false : true} className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Save current schedule as JSON file</button>
                 <button onClick={() => {
                     localStorage.removeItem("schedule")
+                    dispatch(setSchedule({schedule: null}))
                     navigate("/")
-                }} disabled={localStorageItem ? false : true} className="text-red-500 hover:bg-red-500 hover:text-accent w-[25rem] p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Reset my schedule</button>
+                }} disabled={localStorageItem ? false : true} className="text-red-500 hover:bg-red-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Reset my schedule</button>
                 <div className="flex justify-center gap-4">
                     <button onClick={() => {
                         localStorage.setItem("schedule", JSON.stringify(formSchedule))
                         dispatch(setSchedule({schedule: formSchedule}))
-                    }} className="text-green-500 hover:bg-green-500 hover:text-accent w-[15rem] p-2 rounded transition-all duration-500">Save changes</button>
-                    <button onClick={() => navigate("/")} className="hover:bg-black hover:text-accent w-[15rem] p-2 rounded transition-all duration-500">Cancel</button>        
+                    }} className="text-green-500 hover:bg-green-500 hover:text-accent p-2 rounded transition-all duration-500">Save changes</button>
+                    <button onClick={() => navigate("/")} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
                 </div>
             </div>
     </form>)

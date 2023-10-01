@@ -3,16 +3,39 @@ import { useSelector } from "react-redux";
 import DisplayTime from "./DisplayTime";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { useNumerator } from "../hooks/useNumerator";
 
 const Week = () => {
    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
    const {schedule} = useSelector((state: RootState) => state.mainStates)
-   const weekScheduleIndex = schedule!.days.map((subj, index) => ({...subj,index}))
-   const weekSchedule = weekScheduleIndex.filter((subj) => Object.keys(subj).length > 1);
+   const isNumerator = useNumerator();
+   const weekScheduleIndex = schedule!.days.map((day, index) => {
+    let tempObj = {...day,index}
+    let tempSubjs = day.subjects;
+    if(tempSubjs) {
+        tempSubjs = tempSubjs?.filter((subj) => {
+            let status = true;
+            if(subj.isNumerator != undefined) {
+                if(subj.isNumerator == isNumerator) {
+                    status = true
+                } else {
+                    status = false
+                }
+            }
+            return status
+        })
+        tempObj.subjects = tempSubjs
+    }
+    return tempObj
+   })
+   const weekSchedule = weekScheduleIndex.filter((day) => Object.keys(day).length > 1);
    const navigate = useNavigate();
    useEffect(() =>{
        if(weekSchedule.length == 0) {
+        console.log("bruh")
            navigate("/")
+       } else {
+        console.log("Fuck")
        }
    }, [])
    

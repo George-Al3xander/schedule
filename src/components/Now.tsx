@@ -6,13 +6,15 @@ import { useRemaining } from "../hooks/useRemaning";
 import DisplayTime from "./DisplayTime";
 import moment from "moment";
 import {useState, useEffect} from "react"
+import { useNumerator } from "../hooks/useNumerator";
 
 const Now = () => {
     const remaining = useRemaining();      
     const today = useToday();
     const [lastSubject, setLastSubject] = useState(new Date())
     const now =  useNow(today);
-    const {busyStatus, isNumerator, schedule} = useSelector((state: RootState) => state.mainStates)
+    const isNumerator = useNumerator();
+    const {busyStatus,  schedule} = useSelector((state: RootState) => state.mainStates)
     const todaySchedule = schedule && schedule.days[today.getDay()].subjects ? schedule.days[today.getDay()].subjects!.filter((subj) => {
         let status = false;
         if(subj.isNumerator != undefined) {

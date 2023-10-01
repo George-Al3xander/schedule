@@ -26,7 +26,7 @@ export const mainSlice = createSlice({
         setIsNumerator: (state, action: PayloadAction<{status: boolean}>) => {
             state.isNumerator = action.payload.status
         },
-        setSchedule: (state, action: PayloadAction<{schedule: typeSchedule}>) => {
+        setSchedule: (state, action: PayloadAction<{schedule: typeSchedule | null}>) => {
             state.schedule = action.payload.schedule
         },
     }
