@@ -14,7 +14,7 @@ function App() {
   
   
 
-  
+  console.log(location.pathname)
   
   useEffect(() => {   
     const localStorageItem = JSON.parse(localStorage.getItem('schedule')!);        

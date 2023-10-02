@@ -39,7 +39,7 @@ const Now = () => {
 
    
    
-    return (<section className="borger-primary h-[90%]   my-2 rounded flex flex-col justify-between">
+    return (<section className="borger-primary h-[80%]   my-2 rounded flex flex-col justify-between">
         <div  className={`p-4 border-[var(--clr-primary)] border-4 rounded text-center text-accent flex flex-col gap-2 ${(busyStatus &&  now) ? "bg-red-600" : "bg-green-600"}`}>
             <h2 className="font-medium text-lg">{(busyStatus == false &&  now != null) ?"Your next subject:" : busyStatus == true ? "Your current subject:" : "🎉Congrats🎉"}</h2>
             <h1 className={`text-3xl font-bold`}>{now? now.name : "You free"}</h1>

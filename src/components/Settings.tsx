@@ -5,6 +5,7 @@ import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { setSchedule } from "../redux/mainStates";
 import { useNumerator } from "../hooks/useNumerator";
+import useValid from "../hooks/useValid";
 
 
 
@@ -16,7 +17,8 @@ const Settings = () => {
     const {schedule} = useSelector((state: RootState) => state.mainStates);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const isNumerator = useNumerator()
+    const isNumerator = useNumerator();
+    const valid = useValid(formSchedule)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name.split('-')        
         const value = e.target.value;
@@ -66,6 +68,7 @@ const Settings = () => {
         }
         
     }
+
     const addEmptySubject = (index: number) => {
         let tempArray = {...formSchedule};
         if(formSchedule.days[index].subjects) {
@@ -79,7 +82,7 @@ const Settings = () => {
     const deleteSubject = (dayIndex:number, subjIndex:number) => {
         let tempArray = {...formSchedule};
         let tempSubjects = tempArray.days[dayIndex].subjects;
-        tempSubjects = tempSubjects?.filter((subj,index) => index != subjIndex)
+        tempSubjects = tempSubjects?.filter((subj) => tempSubjects?.indexOf(subj)!= subjIndex)
         if(tempSubjects?.length == 0) {
            delete tempArray.days[dayIndex].subjects
         } else {
@@ -89,6 +92,7 @@ const Settings = () => {
         setFormSchedule(tempArray)
 
     }
+
     const exportJson = (file: typeSchedule) => {        
         const fileName = "my-file";
         const json = JSON.stringify(file, null, 2);
@@ -106,9 +110,27 @@ const Settings = () => {
         document.body.removeChild(link);
         URL.revokeObjectURL(href);
     }
+
     useEffect(() => {
-        //console.log(formSchedule)
+        console.log(valid)
     }, [formSchedule])
+
+    const saveSchedule = () => {
+        let sorted = formSchedule;
+        let days = formSchedule.days.map((day) => {
+            let subjs = day.subjects?.sort((a, b) => a.time.hours - b.time.hours)
+            if(day.subjects) {
+                return {...day, subjects: subjs}
+
+            } else {
+                return day
+            }
+        });
+        sorted.days = days;        
+        localStorage.setItem("schedule", JSON.stringify(sorted))
+        dispatch(setSchedule({schedule: sorted}))
+    }
+
     return(<form onSubmit={(e) => e.preventDefault()}>
         <fieldset className="border-dotted border-4 p-2 mb-4">
             <legend>Time & Numerator</legend>
@@ -143,7 +165,7 @@ const Settings = () => {
             return <fieldset className="border-dotted border-4 p-2 mb-4">
                     <legend>{dayNames[formSchedule.days.indexOf(day)]}</legend>
                     {day.subjects != undefined ? day.subjects.map((subj, index) => {
-                        return <div className="flex gap-4 pr-4 border-y-2 border-t-primary mb-2 py-2 flex-wrap relative">
+                        return <div className="flex gap-4 pr-4 border-t-2 border-t-primary mb-2 py-4 flex-wrap relative">
                             <input  onChange={handleChange} name={`subj-${formSchedule.days.indexOf(day)}-${index}-name`}  placeholder="Class name" defaultValue={subj.name} type="text" />
                             <div  className="">
                                 <label>Time: </label>
@@ -168,6 +190,7 @@ const Settings = () => {
                 </fieldset>
             })}
             <div className="flex flex-col gap-2">    
+                <button onClick={() => exportJson(blankSchedule)}  className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Download JSON sample file</button>
                 <button onClick={() => exportJson(schedule!)} disabled={localStorageItem ? false : true} className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Save current schedule as JSON file</button>
                 <button onClick={() => {
                     localStorage.removeItem("schedule")
@@ -175,10 +198,7 @@ const Settings = () => {
                     navigate("/")
                 }} disabled={localStorageItem ? false : true} className="text-red-500 hover:bg-red-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Reset my schedule</button>
                 <div className="flex justify-center gap-4">
-                    <button onClick={() => {
-                        localStorage.setItem("schedule", JSON.stringify(formSchedule))
-                        dispatch(setSchedule({schedule: formSchedule}))
-                    }} className="text-green-500 hover:bg-green-500 hover:text-accent p-2 rounded transition-all duration-500">Save changes</button>
+                    <button disabled={valid ? false : true} onClick={saveSchedule} className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">Save changes</button>
                     <button onClick={() => navigate("/")} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
                 </div>
             </div>
