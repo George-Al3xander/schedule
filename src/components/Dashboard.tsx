@@ -3,7 +3,7 @@ import Nav from './Nav';
 import Now from './Now';
 import Today from './Today';
 import Week from './Week';
-import Settings from "./Settings";
+import Settings from "./settings/Settings";
 import Menu from "./Menu";
 
 

@@ -1,11 +1,11 @@
 import { useState , useEffect} from 'react'
-import { typeSchedule } from '../types/types'
+import {typeSubject } from '../types/types'
 import moment from 'moment'
 
 
 
 
-const useValid = (schedule: typeSchedule) => {
+const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
     const [valid, setValid] = useState(false)
 
     const checkTimeValid = ({hours, minutes} : {hours: number, minutes: number}) => {
@@ -19,67 +19,14 @@ const useValid = (schedule: typeSchedule) => {
       
         return {hours,minutes};
     }
+    const timeBetween = {hours: time.breakLength.hours + time.classLength.hours, minutes: time.breakLength.minutes + time.classLength.minutes}
 
     useEffect(() => {
-        let timeValid = false;
-        let daysValid = false
-        let sorted = schedule;
-        let days = schedule.days.map((day) => {
-            let subjs = day.subjects?.sort((a, b) => a.time.hours - b.time.hours)
-            if(day.subjects) {
-                return {...day, subjects: subjs}
 
-            } else {
-                return day
-            }
-        });
-        sorted.days = days;   
-        
-        if(checkTimeValid(sorted.time.breakLength) && checkTimeValid(sorted.time.breakLength)) {
-            timeValid = true
-            console.log("Time valid")
-        }
-        if(timeValid) {
-            const timeBetween = {hours: schedule.time.breakLength.hours + schedule.time.classLength.hours, minutes: schedule.time.breakLength.minutes + schedule.time.classLength.minutes}
-            let daysCheck = sorted.days.filter((day) => {
-                let status = false
-
-                let subjCheck = day.subjects?.filter((a, number) => {
-                    let subjStatus = false;
-                    if(number != day.subjects?.length! - 1) {
-                        const b = day.subjects![number + 1]
-                        const aDate = new Date();
-                        aDate.setHours(a.time.hours);
-                        aDate.setMinutes(a.time.minutes);
-                        const bDate = new Date();
-                        bDate.setHours(b.time.hours);
-                        bDate.setMinutes(b.time.minutes);
-
-                        if(moment(bDate).add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes").isSameOrAfter(aDate, "hours") == false) {
-                            subjStatus = true
-                        }
-                    }
-
-                    return subjStatus
-                })
-                if(subjCheck?.length! > 0) {
-                    status = true
-                }
-                return status
-            })
-            
-            if(daysCheck.length == 0) {
-                daysValid = true
-            }
-        }
-
-        if(daysValid)  {
-            console.log("Days valid")
-            setValid(true)
-        }
-        
-    }, [schedule])
-
+    }, [subj])
+       
+           
+           
 
     return valid
 }

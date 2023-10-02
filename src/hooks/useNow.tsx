@@ -39,9 +39,10 @@ export const useNow = (today: Date) => {
         starttime.setMinutes(startMinutes);        
         const starttimeCheck = moment(starttime).isBefore(moment(today))        
         if(starttimeCheck) {
-            const endtime =moment(starttime).add(schedule?.time.classLength.hours, "hours").add(schedule?.time.classLength.minutes, "minutes").toDate();
-            const timeLeft = getTimeRemaining(endtime);         
-            if(timeLeft.hours > 0 && timeLeft.minutes > 0) {
+            const endtime = moment(starttime).add(schedule?.time.classLength.hours, "hours").add(schedule?.time.classLength.minutes, "minutes").toDate();
+            const timeLeft = getTimeRemaining(endtime);      
+             
+            if((timeLeft.hours == 0 && timeLeft.minutes > 0) || (timeLeft.hours > 0 && timeLeft.minutes == 0)) {
                 return true
             } else {
                 return false
