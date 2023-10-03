@@ -14,7 +14,7 @@ const WeekdaySettings = ({dayIndex,  day, handleChange, addSubject, deleteSubjec
             <legend>{dayNames[dayIndex]}</legend>
 
             {day.subjects != undefined ? 
-                day.subjects.map((subj, subjIndex) => <Subj setCurrentSubject={setCurrentSubject} editStatus={editStatus} setEditStatus={setEditStatus} setMenuShown={setMenuShown} subj={subj} subjIndex={subjIndex} dayIndex={dayIndex} handleChange={handleChange} deleteSubject={deleteSubject}/>) 
+                day.subjects.map((subj, subjIndex) => <Subj setCurrentSubject={setCurrentSubject} editStatus={menuShown} setEditStatus={setEditStatus} setMenuShown={setMenuShown} subj={subj} subjIndex={subjIndex} dayIndex={dayIndex} handleChange={handleChange} deleteSubject={deleteSubject}/>) 
                 : 
                 menuShown == true ?
                 null

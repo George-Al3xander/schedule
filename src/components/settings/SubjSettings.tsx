@@ -74,8 +74,11 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, set
                 <option value="false">False</option>
             </select>
         </div>
-        <button  onClick={() => deleteSubject(dayIndex, subjIndex)} className="max-w-[1.5rem] absolute right-0"><svg className="w-[1.5rem]"    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg></button>
         </div>
+        {valid == true ? null : <ul className="text-red-600"><h1 className="italic font-bold">Check your inputs please:</h1> 
+            <li className="mb-2">Name of the subject can't be an empty string</li>
+            <li className="mb-2">Check your time to be in a correct time frame, so it can fit inside the existing schedule(including break and class lengths)</li>
+        </ul>}
         <div className="flex justify-center gap-4">
             <button disabled={valid == true ? false : true} onClick={addCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">{editStatus == true ? "Save" : "Add"}</button>
             <button onClick={close} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
