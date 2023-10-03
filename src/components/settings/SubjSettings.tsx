@@ -6,12 +6,12 @@ import useValid from "../../hooks/useValid";
 import moment from "moment";
 
 
-const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, setMenuShown, editStatus, setEditStatus, addSubject, time}: typeSubjSettingsProps) => {
+const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex,  editStatus, close, addSubject, time}: typeSubjSettingsProps) => {
 
     const formRef = useRef<HTMLFormElement>(null)
     const [formData, setFormData] = useState<typeSubject>(subj)
-    const valid = useValid(daySubjects!, formData, time);
-
+    const {nameValid, timeValid} = useValid(daySubjects!, formData, time);
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name        
         const value = e.target.value;
@@ -37,28 +37,18 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, set
         }
     }
 
-    const close = () => {
-        setMenuShown(false)
-        setEditStatus(false)
-    }
+    
 
     const addCurrentSubject = () => {
         addSubject(dayIndex, formData)
+        close()
     }
 
     useEffect(() => {
         //console.log(formData)
     }, [formData])
 
-    return(<form  onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(formRef.current!)
-        const name = formData.get("name")
-        const numerator = formData.get("numerator")
-        const time = {hours: formData.get("hours"), minutes: formData.get("minutes")}
-        
-        //console.log(name, numerator, time)
-    }} ref={formRef} className="flex flex-col border-2 border-primary p-2">
+    return(<form  ref={formRef} className="flex flex-col border-2 border-primary p-2">
         <div key={"setting-form-div"} className="flex flex-col gap-4 pr-4  mb-2 py-4 flex-wrap relative">
         <input onChange={handleChange} className="p-2 max-w-[40%] rounded"   key={"setting-form-name"} name={`name`}  placeholder="Class name" defaultValue={formData.name} type="text" />
         <div  className="flex items-center gap-2">
@@ -75,12 +65,13 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, set
             </select>
         </div>
         </div>
-        {valid == true ? null : <ul className="text-red-600"><h1 className="italic font-bold">Check your inputs please:</h1> 
-            <li className="mb-2">Name of the subject can't be an empty string</li>
-            <li className="mb-2">Check your time to be in a correct time frame, so it can fit inside the existing schedule(including break and class lengths)</li>
+        {(nameValid == true && timeValid == true)  ? null : <ul className="text-red-600"><h1 className="italic font-bold">Check your inputs please:</h1> 
+            {nameValid == false ? <li className="mb-2">Name of the subject can't be an empty string</li> : null}
+            {timeValid == false ?  <li className="mb-2">Check your time to be in a correct time frame, so it can fit inside the existing schedule(including break and class lengths)</li> : null}
+            
         </ul>}
         <div className="flex justify-center gap-4">
-            <button disabled={valid == true ? false : true} onClick={addCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">{editStatus == true ? "Save" : "Add"}</button>
+            <button disabled={(nameValid == true && timeValid == true) ? false : true} onClick={addCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">{editStatus == true ? "Save" : "Add"}</button>
             <button onClick={close} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
         </div>
     </form>)

@@ -5,7 +5,6 @@ import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { setSchedule } from "../../redux/mainStates";
 import { useNumerator } from "../../hooks/useNumerator";
-import useValid from "../../hooks/useValid";
 import WeekdaySettings from "./WeekdaySettings";
 
 
@@ -22,42 +21,13 @@ const Settings = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name.split('-')        
-        const value = e.target.value;
-       
+        const value = e.target.value;       
         if(name[0] == "time") {
             if(name[1] == "breakLength") {
                 setFormSchedule({...formSchedule, time: {...formSchedule.time, breakLength: {...formSchedule.time.breakLength, [name[2]]: +value}}})
             } else {
                 setFormSchedule({...formSchedule, time: {...formSchedule.time, classLength: {...formSchedule.time.classLength, [name[2]]: +value}}})
             }
-        } else if(name[0] == "subj") {
-            const dayIndex = +name[1];
-            const subjIndex = +name[2];
-
-            let tempArray = {...formSchedule};            
-            let subj = tempArray.days[dayIndex].subjects![subjIndex];
-
-           if(name[3] == "time") {
-                if(name[4] == "hours") {
-                    subj.time.hours = +value;
-                } else {
-                    subj.time.minutes = +value;
-                }
-           } else if(name[3] == "name") {
-                subj.name = value.trim();
-           } else if(name[3] == "numerator") {            
-                if(value != "none") {
-                    if(value == "true") {
-                        subj.isNumerator = true
-                    } else if(value == "false") {
-                        subj.isNumerator = false
-                    }
-                } else {
-                    delete subj.isNumerator
-                }
-           } 
-           tempArray.days[dayIndex].subjects![subjIndex] = subj
-           setFormSchedule(tempArray)           
         } else if(name[0] == "numerator") {
             let status = true;
             if(value == 'false') {
@@ -65,8 +35,7 @@ const Settings = () => {
                 console.log("Here")
             }
             localStorage.setItem("numerator", JSON.stringify({status, start: new Date()}))
-        }
-        
+        }        
     }
 
     const addSubject = (index: number, newSubj: typeSubject) => {
@@ -150,7 +119,7 @@ const Settings = () => {
             <legend>Time & Numerator</legend>
             <div className="flex flex-col">
                 <div className="mb-4">
-                    <span className="block opacity-60 text-sm">*Changes immediately, without save</span>
+                    <span className="block opacity-60 text-sm">*Changes immediately</span>
                     <label htmlFor="">Is this week a numerator: </label>
                     <select onChange={handleChange} name="numerator" id="">                       
                         <option selected={isNumerator ? true : false} value="true">yes</option>
@@ -176,10 +145,10 @@ const Settings = () => {
             </div>
         </fieldset>
         {formSchedule.days.map((day, dayIndex) => {
-            return <WeekdaySettings time={formSchedule.time} daySubjects={formSchedule.days[dayIndex].subjects} day={day} dayIndex={dayIndex} handleChange={handleChange} addSubject={addSubject} deleteSubject={deleteSubject}/>
+            return <WeekdaySettings time={formSchedule.time} daySubjects={formSchedule.days[dayIndex].subjects} day={day} dayIndex={dayIndex}  addSubject={addSubject} deleteSubject={deleteSubject}/>
             })}
             <div className="flex flex-col gap-2">    
-                <button onClick={() => exportJson(blankSchedule)}  className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Download JSON sample file</button>
+                <button onClick={() => exportJson(blankSchedule)}  className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Download a JSON sample file</button>
                 <button onClick={() => exportJson(schedule!)} disabled={localStorageItem ? false : true} className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Save current schedule as JSON file</button>
                 <button onClick={() => {
                     localStorage.removeItem("schedule")

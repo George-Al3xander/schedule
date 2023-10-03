@@ -21,14 +21,33 @@ export type typeSchedule = {
 
 
 
-export type typeSubjSettingsProps = {
+
+
+export type typeSubjProps = {
     subj: typeSubject, 
     subjIndex: number, 
-    dayIndex: number, 
-    handleChange: any,
+    dayIndex: number,     
     deleteSubject: any,
-    setMenuShown?: any,
-    setEditStatus?: any,
+    close?: any,
+    open?: any,
+    editStatus: boolean,
+    setCurrentSubject: any,
+    addSubject?: any,
+    time?: {
+        breakLength: typeTime,
+        classLength: typeTime
+    },
+    daySubjects?: typeSubject[] | undefined
+
+}
+
+export type typeSubjSettingsProps = {
+    subj: typeSubject, 
+    subjIndex: number,
+    dayIndex: number,     
+    deleteSubject: any,
+    close?: any,
+    open?: any,
     editStatus: boolean,
     setCurrentSubject: any,
     addSubject?: any,
@@ -43,8 +62,7 @@ export type typeSubjSettingsProps = {
 
 export type typeWeekdaySettingsProps = {     
     dayIndex: number,     
-    day: {subjects?: typeSubject[]}
-    handleChange: any,
+    day: {subjects?: typeSubject[]}    
     addSubject: any,
     deleteSubject: any,
     time?: {

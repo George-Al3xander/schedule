@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import DisplayTime from "../DisplayTime";
 
 
-const Subj = ({subj, subjIndex, dayIndex, handleChange,deleteSubject, setEditStatus, setMenuShown, editStatus, setCurrentSubject}: typeSubjSettingsProps) => {
+const Subj = ({subj, subjIndex, dayIndex, deleteSubject, editStatus, setCurrentSubject, open}: typeSubjSettingsProps) => {
 
 
 
@@ -23,8 +23,7 @@ const Subj = ({subj, subjIndex, dayIndex, handleChange,deleteSubject, setEditSta
     <div className="absolute right-0 flex gap-2">
         <button disabled={editStatus == true ? true : false} onClick={() => {
             setCurrentSubject(subj)
-            setEditStatus(true)
-            setMenuShown(true)
+            open()
         }}  className="max-w-[1.5rem]  disabled:opacity-60"><svg className="w-[1.5rem]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg></button>
         <button disabled={editStatus == true ? true : false}  onClick={() => deleteSubject(dayIndex, subjIndex)} className="max-w-[1.5rem]  disabled:opacity-60"><svg className="w-[1.5rem]"    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg></button>
 
