@@ -41,7 +41,7 @@
                     "hours": 8,
                     "minutes": 0
                 },
-                "isNumerator": false
+                "isNumerator": true
             },
             {
                 "name": "Фізічне виховання",

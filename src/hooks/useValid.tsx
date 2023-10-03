@@ -7,10 +7,8 @@ import moment from 'moment'
 
 const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
     const [valid, setValid] = useState(false)
-
-    const checkTimeValid = ({hours, minutes} : {hours: number, minutes: number}) => {
-        return (hours > 0 || minutes > 0)
-    }
+    const blankValid = new RegExp(/\S/)
+   
 
     function getTimeRemaining(starttime: Date ,endtime: Date){ 
         const total = Date.parse(endtime.toString()) - Date.parse(starttime.toString());           
@@ -22,11 +20,86 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
     const timeBetween = {hours: time.breakLength.hours + time.classLength.hours, minutes: time.breakLength.minutes + time.classLength.minutes}
 
     useEffect(() => {
+        const nameValid = blankValid.test(subj.name);        
+        let timeValid = false;
+        if(subjects != undefined) {
+            let after = subjects.filter((a) => {
+                let status = false;
+                if(a.time.hours == subj.time.hours) {
+                    if(a.time.minutes > subj.time.minutes) {
+                        status = true;
+                    }
 
+                } else if(a.time.hours > subj.time.hours) {
+                    status = true;
+                }
+                return status
+            })
+
+            let before = subjects.filter((a) => {
+                let status = false;
+                if(a.time.hours == subj.time.hours) {
+                    if(a.time.minutes < subj.time.minutes) {
+                        status = true;
+                    }
+
+                } else if(a.time.hours < subj.time.hours) {
+                    status = true;
+                }
+                return status
+            })
+            
+            let beforeCheck = false;
+            let afterCheck = false;
+            
+            if(before.length > 0) {
+                const beforeItem = before[0].time;                
+                const beforeMinumum = moment(`${beforeItem.hours}:${beforeItem.minutes}`, "h:m").add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes")
+                console.log(beforeMinumum.format("h:m"))
+               
+                const timeBetweenBefore = getTimeRemaining(beforeMinumum.toDate(), moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate())
+                if((timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes > 0) || (timeBetweenBefore.hours > 0 && timeBetweenBefore.minutes == 0) || (timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes == 0)) {
+                    beforeCheck = true;
+                }                
+            }
+            if(after.length > 0) {
+                const afterItem = after[0].time;
+                const afterMinumum = moment(`${afterItem.hours}:${afterItem.minutes}`, "h:m").subtract(timeBetween.hours, "hours").subtract(timeBetween.minutes, "minutes")
+                const timeBetweenAfter = getTimeRemaining(moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate(), afterMinumum.toDate())
+                if((timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes > 0) || (timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes == 0) || (timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes == 0)) {
+                    afterCheck = true;
+                }                
+            }
+           
+
+            if(before.length > 0 && after.length > 0) {
+                if(beforeCheck == true && afterCheck == true) {                    
+                    timeValid = true
+                }
+            } else if (before.length > 0 && after.length == 0) {
+                if(beforeCheck == true) {                    
+                    timeValid = true
+                }
+            } else if (before.length == 0 && after.length > 0) {
+                if(afterCheck == true) {                    
+                    timeValid = true
+                }
+            }
+            if(nameValid == true && timeValid == true) {                    
+                setValid(true)
+            } else {
+                setValid(false)
+            }
+                
+        } else {           
+            if(nameValid) {                
+                setValid(true)
+            } else {
+                setValid(false)
+            }
+        }       
     }, [subj])
-       
-           
-           
+             
 
     return valid
 }

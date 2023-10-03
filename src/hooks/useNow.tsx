@@ -5,12 +5,13 @@ import { setBusyStatus } from "../redux/mainStates";
 import {useSelector} from "react-redux"
 import { RootState } from "../redux/store";
 import moment from "moment";
+import { useNumerator } from "./useNumerator";
 
 
 export const useNow = (today: Date) => {
     const dispatch = useDispatch();
     const {schedule} = useSelector((state: RootState) => state.mainStates)
-    const {isNumerator} = useSelector((state: RootState) => state.mainStates)
+    const isNumerator = useNumerator()
     const [currentSubject, setCurrentSubject] = useState<typeSubject | null>();
     const todaySchedule = (schedule && schedule.days[today.getDay()].subjects) ? schedule.days[today.getDay()].subjects!.filter((subj) => {
         let status = false;

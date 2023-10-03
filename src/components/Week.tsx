@@ -12,7 +12,7 @@ const Week = () => {
    const weekScheduleIndex = schedule!.days.map((day, index) => {
     let tempObj = {...day,index}
     let tempSubjs = day.subjects;
-    if(tempSubjs) {
+    if(tempSubjs != undefined) {
         tempSubjs = tempSubjs?.filter((subj) => {
             let status = true;
             if(subj.isNumerator != undefined) {

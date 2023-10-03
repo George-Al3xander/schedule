@@ -3,6 +3,7 @@ import { typeSubjSettingsProps, typeSubject } from "../../types/types"
 
 import { v4 as uuidv4 } from 'uuid';
 import useValid from "../../hooks/useValid";
+import moment from "moment";
 
 
 const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, setMenuShown, editStatus, setEditStatus, addSubject, time}: typeSubjSettingsProps) => {
@@ -10,7 +11,8 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, set
     const formRef = useRef<HTMLFormElement>(null)
     const [formData, setFormData] = useState<typeSubject>(subj)
     const valid = useValid(daySubjects!, formData, time);
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name        
         const value = e.target.value;
 
@@ -38,6 +40,10 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, set
     const close = () => {
         setMenuShown(false)
         setEditStatus(false)
+    }
+
+    const addCurrentSubject = () => {
+        addSubject(dayIndex, formData)
     }
 
     useEffect(() => {
@@ -71,10 +77,8 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex, deleteSubject, set
         <button  onClick={() => deleteSubject(dayIndex, subjIndex)} className="max-w-[1.5rem] absolute right-0"><svg className="w-[1.5rem]"    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg></button>
         </div>
         <div className="flex justify-center gap-4">
-                    <button onClick={() => {
-                        addSubject(dayIndex, formData)
-                    }}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">{editStatus == true ? "Save" : "Add"}</button>
-                    <button onClick={close} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
+            <button disabled={valid == true ? false : true} onClick={addCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">{editStatus == true ? "Save" : "Add"}</button>
+            <button onClick={close} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
         </div>
     </form>)
 }
