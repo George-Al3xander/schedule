@@ -2,7 +2,7 @@ import { useDispatch} from "react-redux";
 import { setSchedule } from "../redux/mainStates";
 import scheduleDb from "../scheduleDb.json"
 import { typeSchedule } from "../types/types";
-import {Routes, Route, NavLink, useLocation} from "react-router-dom"
+import {Routes, Route, NavLink} from "react-router-dom"
 import Settings from "./settings/Settings";
 import Menu from "./Menu";
 

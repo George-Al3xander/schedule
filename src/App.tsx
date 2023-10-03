@@ -22,7 +22,7 @@ function App() {
 
 
 
-  return (<div className={`w-[min(90%,40rem)] mx-auto py-6 ${location.pathname == "/week" || location.pathname == "/settings"? "min-" : ""}h-[100vh]  bg-gray-100`}>    
+  return (<div className={`w-[min(95%,40rem)] mx-auto py-6 ${location.pathname == "/week" || location.pathname == "/settings"? "min-" : ""}h-[100vh]  bg-gray-100`}>    
     {schedule ? <Dashboard /> : <LandingPage />
     }
   </div>    

@@ -8,5 +8,5 @@ export default defineConfig({
     open: true,
     port: 3000
   },
-  base: "/schedule-host-test/"
+  base: "/schedule/"
 })
