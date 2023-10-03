@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import {useRef, useState } from "react";
 import { typeSubjSettingsProps, typeSubject } from "../../types/types"
 
 import { v4 as uuidv4 } from 'uuid';
 import useValid from "../../hooks/useValid";
-import moment from "moment";
 
 
-const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex,  editStatus, close, addSubject, time}: typeSubjSettingsProps) => {
+
+const SubjSettings = ({subj,daySubjects, editSubject, index,dayIndex,  editStatus, close, addSubject, time}: typeSubjSettingsProps) => {
 
     const formRef = useRef<HTMLFormElement>(null)
     const [formData, setFormData] = useState<typeSubject>(subj)
@@ -44,11 +44,14 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex,  editStatus, close
         close()
     }
 
-    useEffect(() => {
-        //console.log(formData)
-    }, [formData])
+    const editCurrentSubject = () => {
+        editSubject(dayIndex, index, formData)
+        close();
+    }
 
-    return(<form  ref={formRef} className="flex flex-col border-2 border-primary p-2">
+
+
+    return(<form onSubmit={(e) => e.preventDefault()}  ref={formRef} className="flex flex-col border-2 border-primary p-2">
         <div key={"setting-form-div"} className="flex flex-col gap-4 pr-4  mb-2 py-4 flex-wrap relative">
         <input onChange={handleChange} className="p-2 max-w-[40%] rounded"   key={"setting-form-name"} name={`name`}  placeholder="Class name" defaultValue={formData.name} type="text" />
         <div  className="flex items-center gap-2">
@@ -71,7 +74,12 @@ const SubjSettings = ({subj,daySubjects, subjIndex, dayIndex,  editStatus, close
             
         </ul>}
         <div className="flex justify-center gap-4">
-            <button disabled={(nameValid == true && timeValid == true) ? false : true} onClick={addCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">{editStatus == true ? "Save" : "Add"}</button>
+            {editStatus == true ?  
+            <button disabled={(nameValid == true && timeValid == true) ? false : true} onClick={editCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">Save</button>
+            : 
+            <button disabled={(nameValid == true && timeValid == true) ? false : true} onClick={addCurrentSubject}  className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">Add</button>
+            }
+            
             <button onClick={close} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
         </div>
     </form>)

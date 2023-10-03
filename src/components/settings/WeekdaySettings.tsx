@@ -1,14 +1,16 @@
-import {  typeWeekdaySettingsProps } from "../../types/types";
+import {  typeSubject, typeWeekdaySettingsProps } from "../../types/types";
 import SubjSettings from "./SubjSettings"
 import Subj from "./Subj";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
-
-const WeekdaySettings = ({dayIndex,  day,  addSubject, deleteSubject, daySubjects, time}: typeWeekdaySettingsProps) => {
+const WeekdaySettings = ({dayIndex,  day,  addSubject, deleteSubject,editSubject, daySubjects, time}: typeWeekdaySettingsProps) => {
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const [menuShown, setMenuShown] = useState(false);
     const [editStatus, setEditStatus] = useState(false)
-    const [currentSubject, setCurrentSubject] = useState({name: "", time: {hours: 0, minutes: 0}})
+    const blankSubj = {name: "", time: {hours: 0, minutes: 0}}
+    const [currentSubject, setCurrentSubject] = useState(blankSubj)
+    const [currentIndex, setCurrentIndex] = useState(0)
     
     const close = () => {
         setMenuShown(false)
@@ -19,13 +21,18 @@ const WeekdaySettings = ({dayIndex,  day,  addSubject, deleteSubject, daySubject
         setMenuShown(true)
         setEditStatus(true)
     }
+
+    const getCurrentSubject = (currSubj: typeSubject, index: number) => {
+        setCurrentSubject(currSubj)
+        setCurrentIndex(index)
+    }
     
     return(<>
-        <fieldset className="border-dotted border-4 p-2 mb-4">
-            <legend>{dayNames[dayIndex]}</legend>
+        <fieldset key={uuidv4()} className="border-dotted border-4 p-2 mb-4">
+            <legend className="text-lg font-bold">{dayNames[dayIndex]}</legend>
 
             {day.subjects != undefined ? 
-                day.subjects.map((subj, subjIndex) => <Subj open={open} setCurrentSubject={setCurrentSubject} editStatus={menuShown} close={close} subj={subj} subjIndex={subjIndex} dayIndex={dayIndex}  deleteSubject={deleteSubject}/>) 
+                day.subjects.map((subj, subjIndex) => <Subj open={open} getCurrentSubject={getCurrentSubject} editStatus={menuShown}  subj={subj} subjIndex={subjIndex} dayIndex={dayIndex}  deleteSubject={deleteSubject}/>) 
                 : 
                 menuShown == true ?
                 null
@@ -36,7 +43,7 @@ const WeekdaySettings = ({dayIndex,  day,  addSubject, deleteSubject, daySubject
                {menuShown ? null :  <button onClick={() => setMenuShown(true)} className="mx-auto text-green-600 px-4">Add</button>}   
             </div>
         {menuShown ?  
-        <SubjSettings time={time} daySubjects={daySubjects} addSubject={addSubject} setCurrentSubject={setCurrentSubject} close={close} editStatus={editStatus} subj={editStatus ? currentSubject : {name: "", time: {hours: 0, minutes: 0}}}  subjIndex={12} dayIndex={dayIndex}  deleteSubject={deleteSubject} />
+        <SubjSettings index={currentIndex} editSubject={editSubject} time={time!} daySubjects={daySubjects} addSubject={addSubject}  close={close} editStatus={editStatus} subj={editStatus ? currentSubject : blankSubj}   dayIndex={dayIndex}  />
         :
         null
         }

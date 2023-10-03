@@ -28,35 +28,24 @@ export type typeSubjProps = {
     subjIndex: number, 
     dayIndex: number,     
     deleteSubject: any,
-    close?: any,
-    open?: any,
     editStatus: boolean,
-    setCurrentSubject: any,
-    addSubject?: any,
-    time?: {
-        breakLength: typeTime,
-        classLength: typeTime
-    },
-    daySubjects?: typeSubject[] | undefined
-
+    getCurrentSubject: Function,
+    open: any,   
 }
 
 export type typeSubjSettingsProps = {
     subj: typeSubject, 
-    subjIndex: number,
+    index: number
+    daySubjects: typeSubject[] | undefined    
     dayIndex: number,     
-    deleteSubject: any,
-    close?: any,
-    open?: any,
     editStatus: boolean,
-    setCurrentSubject: any,
-    addSubject?: any,
-    time?: {
+    close: any,
+    addSubject: any,
+    time: {
         breakLength: typeTime,
         classLength: typeTime
-    },
-    daySubjects?: typeSubject[] | undefined
-
+    },  
+    editSubject: any
 }
 
 
@@ -69,6 +58,7 @@ export type typeWeekdaySettingsProps = {
         breakLength: typeTime,
         classLength: typeTime
     },
+    editSubject: any,
     daySubjects?: typeSubject[] | undefined
 }
 

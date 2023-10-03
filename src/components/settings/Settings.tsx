@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState} from "react"
 import { typeSchedule, typeSubject } from "../../types/types";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -18,6 +18,10 @@ const Settings = () => {
     const dispatch = useDispatch();
     const isNumerator = useNumerator();
     
+
+    const getTimeValid = ({hours, minutes} : {hours:number, minutes:number}) => {
+        return (hours > 0 || minutes > 0)
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name.split('-')        
@@ -55,24 +59,38 @@ const Settings = () => {
                  return day
              }
          });
-         sorted.days = days;  
-        console.log(tempArray)   
-        setFormSchedule(tempArray)
+         sorted.days = days;           
+            setFormSchedule(tempArray)
     }
 
     const deleteSubject = (dayIndex:number, subjIndex:number) => {     
         let tempArray = {...formSchedule};
         let tempSubjects = tempArray.days[dayIndex].subjects;
-        tempSubjects = tempSubjects?.filter((subj, index) => index != subjIndex)
+        tempSubjects = tempSubjects?.filter((_subj, index) => index != subjIndex)
         if(tempSubjects?.length == 0) {
            delete tempArray.days[dayIndex].subjects         
         } else {
             tempArray.days[dayIndex].subjects = tempSubjects
 
-        }
-        //console.log(tempArray)
+        }        
         setFormSchedule(tempArray)
+    }
 
+    const editSubject = (dayIndex:number, subjIndex:number, newSubj: typeSubject) => {
+        let tempArray = {...formSchedule};        
+        tempArray.days[dayIndex].subjects![subjIndex] = newSubj;
+        let sorted = tempArray;
+        let days = tempArray.days.map((day) => {
+             if(day.subjects != undefined) {
+                 let subjs = day.subjects?.sort((a, b) => a.time.hours - b.time.hours)
+                 return {...day, subjects: subjs}
+
+             } else {
+                 return day
+             }
+        });
+        sorted.days = days;           
+        setFormSchedule(tempArray)
     }
 
     const exportJson = (file: typeSchedule) => {        
@@ -93,25 +111,13 @@ const Settings = () => {
         URL.revokeObjectURL(href);
     }
 
-    useEffect(() => {
-        //console.log(formSchedule)
-    }, [formSchedule])
+    
 
-    const saveSchedule = () => {
-        let sorted = formSchedule;
-        let days = formSchedule.days.map((day) => {
-            let subjs = day.subjects?.sort((a, b) => a.time.hours - b.time.hours)
-            if(day.subjects) {
-                return {...day, subjects: subjs}
-
-            } else {
-                return day
-            }
-        });
-        sorted.days = days;        
-       // localStorage.setItem("schedule", JSON.stringify(sorted))
-       console.log(sorted)
-       // dispatch(setSchedule({schedule: sorted}))
+    const saveSchedule = () => {    
+        navigate("/")            
+       localStorage.setItem("schedule", JSON.stringify(formSchedule));
+       //console.log(formSchedule)
+       dispatch(setSchedule({schedule: formSchedule}));
     }
     
     return(<div>
@@ -121,9 +127,9 @@ const Settings = () => {
                 <div className="mb-4">
                     <span className="block opacity-60 text-sm">*Changes immediately</span>
                     <label htmlFor="">Is this week a numerator: </label>
-                    <select onChange={handleChange} name="numerator" id="">                       
-                        <option selected={isNumerator ? true : false} value="true">yes</option>
-                        <option selected={!isNumerator ? true : false} value="false">no</option>
+                    <select defaultValue={isNumerator ? "true" : "false"} onChange={handleChange} name="numerator" id="">                       
+                        <option  value="true">yes</option>
+                        <option  value="false">no</option>
                     </select>
                 </div>
                 <div className="flex justify-between">
@@ -145,7 +151,7 @@ const Settings = () => {
             </div>
         </fieldset>
         {formSchedule.days.map((day, dayIndex) => {
-            return <WeekdaySettings time={formSchedule.time} daySubjects={formSchedule.days[dayIndex].subjects} day={day} dayIndex={dayIndex}  addSubject={addSubject} deleteSubject={deleteSubject}/>
+            return <WeekdaySettings editSubject={editSubject} time={formSchedule.time} daySubjects={formSchedule.days[dayIndex].subjects} day={day} dayIndex={dayIndex}  addSubject={addSubject} deleteSubject={deleteSubject}/>
             })}
             <div className="flex flex-col gap-2">    
                 <button onClick={() => exportJson(blankSchedule)}  className="text-orange-500 hover:bg-orange-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Download a JSON sample file</button>
@@ -156,7 +162,7 @@ const Settings = () => {
                     navigate("/")
                 }} disabled={localStorageItem ? false : true} className="text-red-500 hover:bg-red-500 hover:text-accent  p-2 rounded mx-auto  disabled:opacity-60 transition-all duration-500">Reset my schedule</button>
                 <div className="flex justify-center gap-4">
-                    <button onClick={saveSchedule} className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">Save changes</button>
+                    <button disabled={getTimeValid(formSchedule.time.breakLength) == true && getTimeValid(formSchedule.time.classLength) == true ? false : true} onClick={saveSchedule} className="text-green-500 hover:bg-green-500 hover:text-accent disabled:opacity-60 p-2 rounded transition-all duration-500">Save changes</button>
                     <button onClick={() => navigate("/")} className="hover:bg-black hover:text-accent  p-2 rounded transition-all duration-500">Cancel</button>        
                 </div>
             </div>

@@ -13,9 +13,6 @@ function App() {
   const {schedule} = useSelector((state: RootState) => state.mainStates) 
   
   
-
-  console.log(location.pathname)
-  
   useEffect(() => {   
     const localStorageItem = JSON.parse(localStorage.getItem('schedule')!);        
     if(localStorageItem)  {
