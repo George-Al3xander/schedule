@@ -38,25 +38,26 @@ export const useNow = (today: Date) => {
         const starttime = new Date();
         starttime.setHours(startHours);
         starttime.setMinutes(startMinutes);        
-        const starttimeCheck = moment(starttime).isBefore(moment(today))        
+        const starttimeCheck = moment(starttime).isBefore(moment(today))               
         if(starttimeCheck) {
             const endtime = moment(starttime).add(schedule?.time.classLength.hours, "hours").add(schedule?.time.classLength.minutes, "minutes").toDate();
             const timeLeft = getTimeRemaining(endtime);      
-             
-            if((timeLeft.hours == 0 && timeLeft.minutes > 0) || (timeLeft.hours > 0 && timeLeft.minutes == 0)) {
-                return true
+            
+            if((timeLeft.hours == 0 && timeLeft.minutes > 0) || (timeLeft.hours > 0 && timeLeft.minutes == 0) || (timeLeft.hours == 0 && timeLeft.minutes == 0) || (timeLeft.hours > 0 && timeLeft.minutes > 0)) {                
+                return true                
             } else {
                 return false
             }
-        } else {
+
+        } else {           
             return false
         }
     } 
 
     const getClosest = () => {        
-        const currentCheck = todaySchedule!.filter((subj) => isStillContinue(subj.time.hours, subj.time.minutes));       
+        const currentCheck = todaySchedule!.filter((subj) => isStillContinue(subj.time.hours, subj.time.minutes));                   
         if(currentCheck.length > 0) {     
-            setCurrentSubject(currentCheck[0])                      
+            setCurrentSubject(currentCheck[0])     
             dispatch(setBusyStatus({status: true}))
         } else {                    
             const onlyFuture = todaySchedule!.filter((subj) => {

@@ -2,7 +2,7 @@ import { useDispatch} from "react-redux";
 import { setSchedule } from "../redux/mainStates";
 import scheduleDb from "../scheduleDb.json"
 import { typeSchedule } from "../types/types";
-import {Routes, Route, NavLink, useLocation} from "react-router-dom"
+import {Routes, Route, NavLink} from "react-router-dom"
 import Settings from "./settings/Settings";
 import Menu from "./Menu";
 
@@ -13,8 +13,7 @@ import Menu from "./Menu";
 const LandingPage = () => {
     const blankSchedule : typeSchedule = {time: {breakLength: {hours: 0, minutes: 0}, classLength: {hours: 0, minutes: 0}},days: [{},{},{},{},{},{},{}]};
 
-    const dispatch = useDispatch();    
-       // result.time != && result.time.breakLength && result.time.classLength && result.days.length > 0 && result.days[0].subjects.length > 0
+    const dispatch = useDispatch();           
     async function importJson(e: any) {     
             const file = e.target.files[0]     
             const fileReader = new FileReader()

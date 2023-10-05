@@ -31,17 +31,14 @@ const Week = () => {
    const weekSchedule = weekScheduleIndex.filter((day) => Object.keys(day).length > 1);
    const navigate = useNavigate();
    useEffect(() =>{
-       if(weekSchedule.length == 0) {
-        console.log("bruh")
+       if(weekSchedule.length == 0) {        
            navigate("/")
-       } else {
-        console.log("Fuck")
-       }
+       } 
    }, [])
    
     return (<table className="w-[100%] ">
         <thead>
-            <tr className="flex text-left bg-primary text-accent p-2 italic opacity-80 border-primary px-2">
+            <tr  className="flex text-left bg-primary text-accent p-2 italic opacity-80 border-primary px-2">
                 <th className="basis-[100%]">Weekday</th>
                 <th className="basis-[100%]">Time</th>
                 <th className="basis-[100%]">Subject</th>

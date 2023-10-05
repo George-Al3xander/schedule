@@ -2,14 +2,13 @@ import { useSelector } from "react-redux";
 import { useNow } from "../hooks/useNow";
 import { useToday } from "../hooks/useToday"
 import { RootState } from "../redux/store";
-import { useRemaining } from "../hooks/useRemaning";
 import DisplayTime from "./DisplayTime";
 import moment from "moment";
 import {useState, useEffect} from "react"
 import { useNumerator } from "../hooks/useNumerator";
+import DisplayRemaining from "./DisplayRemaining";
 
-const Now = () => {
-    const remaining = useRemaining();      
+const Now = () => {    
     const today = useToday();
     const [lastSubject, setLastSubject] = useState(new Date())
     const now =  useNow(today);
@@ -37,13 +36,15 @@ const Now = () => {
         }
     }, [])
 
+    
+
    
    
     return (<section className="borger-primary h-[80%]   my-2 rounded flex flex-col justify-between">
         <div  className={`p-4 border-[var(--clr-primary)] border-4 rounded text-center text-accent flex flex-col gap-2 ${(busyStatus &&  now) ? "bg-red-600" : "bg-green-600"}`}>
             <h2 className="font-medium text-lg">{(busyStatus == false &&  now != null) ?"Your next subject:" : busyStatus == true ? "Your current subject:" : "🎉Congrats🎉"}</h2>
             <h1 className={`text-3xl font-bold`}>{now? now.name : "You're free"}</h1>
-            {(busyStatus == false &&  now != null) ?<h2>That class will be  <span className="font-bold ">in {remaining}</span>.</h2> : null}        
+            {(busyStatus == false &&  now != null) ?<h2>That class will be  <span className="font-bold ">in {<DisplayRemaining />}</span>.</h2> : null}        
         </div>
         {todaySchedule.length > 0 ?
             <aside className="font-medium p-2">
