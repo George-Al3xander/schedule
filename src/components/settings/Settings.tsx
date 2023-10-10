@@ -127,7 +127,7 @@ const Settings = () => {
                 <div className="mb-4">
                     <span className="block opacity-60 text-sm">*Changes immediately</span>
                     <label htmlFor="">Is this week a numerator: </label>
-                    <select defaultValue={isNumerator ? "true" : "false"} onChange={handleChange} name="numerator" id="">                       
+                    <select defaultValue={isNumerator == true ? "true" : "false"} onChange={handleChange} name="numerator" id="">                       
                         <option  value="true">yes</option>
                         <option  value="false">no</option>
                     </select>

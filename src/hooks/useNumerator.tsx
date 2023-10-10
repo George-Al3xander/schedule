@@ -4,10 +4,10 @@ import moment from "moment"
 
 
 export const useNumerator = () => {
-    const [isNumerator, setIsNumerator] = useState(true)
-
+    const localStorageItem = JSON.parse(localStorage.getItem('numerator')!);     
+    const [isNumerator, setIsNumerator] = useState(localStorageItem ? localStorageItem.status : true)
+   
     useEffect(() => {
-        const localStorageItem = JSON.parse(localStorage.getItem('numerator')!);     
         if(localStorageItem) {
              const isSame = moment(localStorageItem.start).isSame(new Date(), "week");
              if(isSame == false) {

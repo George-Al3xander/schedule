@@ -29,28 +29,38 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
         }
         if(subjects != undefined) {
             let after = subjects.filter((a) => {
-                let status = false;
-                if(a.time.hours == subj.time.hours) {
-                    if(a.time.minutes > subj.time.minutes) {
+                let status = false;                
+                if(a.name.toLowerCase().replace(" ", "") != subj.name.toLowerCase().replace(" ", "")) {
+                    if(a.time.hours == subj.time.hours) {
+                        if(a.time.minutes > subj.time.minutes) {
+                            status = true;
+                        }
+    
+                    } else if(a.time.hours > subj.time.hours) {
                         status = true;
                     }
-
-                } else if(a.time.hours > subj.time.hours) {
-                    status = true;
+                } else{
+                    status = false
                 }
+                
                 return status
             })
 
             let before = subjects.filter((a) => {
                 let status = false;
-                if(a.time.hours == subj.time.hours) {
-                    if(a.time.minutes < subj.time.minutes) {
+                if(a.name.toLowerCase().replace(" ", "") != subj.name.toLowerCase().replace(" ", "")) {
+                    if(a.time.hours == subj.time.hours) {
+                        if(a.time.minutes < subj.time.minutes) {
+                            status = true;
+                        }
+    
+                    } else if(a.time.hours < subj.time.hours) {
                         status = true;
                     }
-
-                } else if(a.time.hours < subj.time.hours) {
-                    status = true;
+                } else{
+                    status = false
                 }
+                
                 return status
             })
             
