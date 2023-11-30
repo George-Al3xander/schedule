@@ -1,7 +1,7 @@
 
 type typeTime = {
     hours: number,
-    minutes: number
+    minutes: number,    
 }
 
 export type typeSubject = {

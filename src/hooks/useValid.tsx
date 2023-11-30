@@ -20,6 +20,14 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
     }
     const timeBetween = {hours: time.breakLength.hours + time.classLength.hours, minutes: time.breakLength.minutes + time.classLength.minutes}
 
+    const validateNumerator = (item: typeSubject) => {
+        if((item.isNumerator != undefined && subj.isNumerator != undefined && item.isNumerator == true && subj.isNumerator == false)
+        || (item.isNumerator != undefined && subj.isNumerator != undefined && item.isNumerator == false && subj.isNumerator == true)) {
+                    return true
+        } 
+        return false
+    }
+
     useEffect(() => {
         if(blankValid.test(subj.name) == true) {
             setNameValid(true)
@@ -67,7 +75,12 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
             let beforeCheck = false;
             let afterCheck = false;            
             if(before.length > 0) {
-                const beforeItem = before[0].time;                
+                const beforeItem = before[0].time; 
+                if(validateNumerator(before[0])) {
+                    beforeCheck = true;                    
+                }   else {
+
+                }           
                 const beforeMinumum = moment(`${beforeItem.hours}:${beforeItem.minutes}`, "h:m").add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes")
                 const timeBetweenBefore = getTimeRemaining(beforeMinumum.toDate(), moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate())
                 if((timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes > 0) || (timeBetweenBefore.hours > 0 && timeBetweenBefore.minutes == 0) || (timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes == 0)) {
@@ -76,15 +89,25 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
             }
             if(after.length > 0) {
                 const afterItem = after[0].time;
+                if(validateNumerator(after[0])) {
+                    afterCheck = true;                    
+                }                  
+               
                 const afterMinimum = moment(`${afterItem.hours}:${afterItem.minutes}`, "h:m").subtract(timeBetween.hours, "hours").subtract(timeBetween.minutes, "minutes")
                 const timeBetweenAfter = getTimeRemaining(moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate(), afterMinimum.toDate())
                 if((timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes > 0) || (timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes == 0) || (timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes == 0) || timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes > 0) {
                     afterCheck = true;
                 }                
             }
-           
-
-            if(before.length > 0 && after.length > 0) {
+            
+            const el = subjects.find(el => el.time.hours == subj.time.hours && el.time.minutes == subj.time.minutes)
+            if(el) {
+                if(validateNumerator(el)) {
+                    setTimeValid(true)
+                } else {
+                    setTimeValid(false)
+                }
+            } else if(before.length > 0 && after.length > 0) {
                 if(beforeCheck == true && afterCheck == true) {                    
                     setTimeValid(true)
                 } else {
@@ -107,8 +130,7 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
             setTimeValid(true)
         }
     }, [subj])
-             
-
+           
     return {nameValid, timeValid}
 }
 
