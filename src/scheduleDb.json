@@ -13,21 +13,21 @@
         {},
         {"subjects": [
             {
-                "name": "Математичний аналіз",
+                "name": "Programming fundamentals",
                 "time": {
                     "hours": 9,
                     "minutes": 30
                 }                
             },
             {
-                "name": "Історія та культура України",
+                "name": "Ethics",
                 "time": {
                     "hours": 11,
                     "minutes": 0
                 }                
             },
             {
-                "name": "Вступ до спеціальності",
+                "name": "Relational Databases",
                 "time": {
                     "hours": 13,
                     "minutes": 0
@@ -36,7 +36,7 @@
         ]},
         {"subjects": [
             {
-                "name": "Основи обчислювальної техніки",
+                "name": "Object Oriented Programming",
                 "time": {
                     "hours": 8,
                     "minutes": 0
@@ -44,21 +44,21 @@
                 "isNumerator": true
             },
             {
-                "name": "Фізічне виховання",
+                "name": "Algorithms",
                 "time": {
                     "hours": 9,
                     "minutes": 30
                 }                
             },
             {
-                "name": "Дискретна математика",
+                "name": "Cybersecurity",
                 "time": {
                     "hours": 11,
                     "minutes": 0
                 }                
             },
             {
-                "name": "Лінійна алгебра",
+                "name": "Computer Architecture",
                 "time": {
                     "hours": 13,
                     "minutes": 0
@@ -67,28 +67,28 @@
         ]},
         {"subjects": [
             {
-                "name": "Лінійна алгебра",
+                "name": "Computer Architecture",
                 "time": {
                     "hours": 8,
                     "minutes": 0
                 }                
             },
             {
-                "name": "Іноземна мова",
+                "name": "English",
                 "time": {
                     "hours": 9,
                     "minutes": 30
                 }                
             },
             {
-                "name": "Дискретна математика",
+                "name": "Cybersecurity",
                 "time": {
                     "hours": 11,
                     "minutes": 0
                 }                
             },
             {
-                "name": "Історія та культура України",
+                "name": "Ethics",
                 "time": {
                     "hours": 14,
                     "minutes": 30
@@ -98,7 +98,7 @@
         ]},
         {"subjects": [
             {
-                "name": "Математичний аналіз",
+                "name": "Programming fundamentals",
                 "time": {
                     "hours": 8,
                     "minutes": 0
@@ -106,28 +106,28 @@
                 "isNumerator": false
             },
             {
-                "name": "Фізічне виховання",
+                "name": "Algorithms",
                 "time": {
                     "hours": 9,
                     "minutes": 30
                 }                
             },
             {
-                "name": "Іноземна мова",
+                "name": "English",
                 "time": {
                     "hours": 19,
                     "minutes": 30
                 }                
             },
             {
-                "name": "Кураторська година",
+                "name": "Data Structure",
                 "time": {
                     "hours": 13,
                     "minutes": 0
                 }                
             },
             {
-                "name": "Основи обчислювальної техніки",
+                "name": "Object Oriented Programming",
                 "time": {
                     "hours": 14,
                     "minutes": 30

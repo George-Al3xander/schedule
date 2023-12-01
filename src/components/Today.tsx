@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { useNow } from "../hooks/useNow";
 import { useToday } from "../hooks/useToday"
-import schedule from "../scheduleDb.json"
 import { RootState } from "../redux/store";
 import DisplayTime from "./DisplayTime";
 import { useNavigate } from "react-router-dom";
@@ -12,9 +11,9 @@ import { useNumerator } from "../hooks/useNumerator";
 const Today = () => {
     const today = useToday();
     const now =  useNow(today);
-    const isNumerator = useNumerator();
-    const {busyStatus} = useSelector((state: RootState) => state.mainStates)
-    const todaySchedule = schedule.days[today.getDay()].subjects ? schedule.days[today.getDay()].subjects!.filter((subj) => {
+    const isNumerator = useNumerator();    
+    const {busyStatus,  schedule} = useSelector((state: RootState) => state.mainStates)
+    const todaySchedule = schedule && schedule.days[today.getDay()].subjects ? schedule.days[today.getDay()].subjects!.filter((subj) => {
         let status = false;
         if(subj.isNumerator != undefined) {
             if(subj.isNumerator == isNumerator) {
@@ -24,7 +23,8 @@ const Today = () => {
             status = true
         }
         return status
-    }) : [];
+    }) : []
+
     const navigate = useNavigate();
     useEffect(() =>{
         if(todaySchedule.length == 0) {

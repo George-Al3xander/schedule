@@ -25,6 +25,7 @@ const Now = () => {
         }
         return status
     }) : []
+    //console.log(todaySchedule)
 
 
     useEffect(() => {

@@ -74,39 +74,40 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
             
             let beforeCheck = false;
             let afterCheck = false;            
-            if(before.length > 0) {
-                const beforeItem = before[0].time; 
-                if(validateNumerator(before[0])) {
-                    beforeCheck = true;                    
-                }   else {
-
-                }           
-                const beforeMinumum = moment(`${beforeItem.hours}:${beforeItem.minutes}`, "h:m").add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes")
-                const timeBetweenBefore = getTimeRemaining(beforeMinumum.toDate(), moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate())
-                if((timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes > 0) || (timeBetweenBefore.hours > 0 && timeBetweenBefore.minutes == 0) || (timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes == 0)) {
+            if(before.length > 0) {               
+                const beforeItem = before[before.length-1].time;
+                const beforeMinumum = moment(`${beforeItem.hours}:${beforeItem.minutes}`, "h:m").add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes");
+                const timeBetweenBefore = getTimeRemaining(beforeMinumum.toDate(), moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate());
+                //Checking if timeBefore  is a longer duration than the allowed timeBetween duration
+                const simpleCoond = (timeBetweenBefore.hours == timeBetween.hours && timeBetweenBefore.minutes >= timeBetween.minutes) || (timeBetweenBefore.hours > timeBetween.hours)  
+                const defaultCoond = (timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes > 0) || (timeBetweenBefore.hours > 0 && timeBetweenBefore.minutes == 0) || (timeBetweenBefore.hours == 0 && timeBetweenBefore.minutes == 0)
+                if(simpleCoond || defaultCoond) {
                     beforeCheck = true;
                 }                
+              
             }
+            
             if(after.length > 0) {
-                const afterItem = after[0].time;
-                if(validateNumerator(after[0])) {
-                    afterCheck = true;                    
-                }                  
-               
+                const afterItem = after[0].time;                
                 const afterMinimum = moment(`${afterItem.hours}:${afterItem.minutes}`, "h:m").subtract(timeBetween.hours, "hours").subtract(timeBetween.minutes, "minutes")
-                const timeBetweenAfter = getTimeRemaining(moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate(), afterMinimum.toDate())
-                if((timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes > 0) || (timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes == 0) || (timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes == 0) || timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes > 0) {
+                const timeBetweenAfter = getTimeRemaining(moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate(), afterMinimum.toDate())               
+                //Checking if timeAfter  is a longer duration than the allowed timeBetween duration
+                
+                const simpleCoond = (timeBetweenAfter.hours == timeBetween.hours && timeBetweenAfter.minutes > timeBetween.minutes) || (timeBetweenAfter.hours > timeBetween.hours)  
+                const defaultCoond = ((timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes > 0) || (timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes == 0) || (timeBetweenAfter.hours == 0 && timeBetweenAfter.minutes == 0) || (timeBetweenAfter.hours > 0 && timeBetweenAfter.minutes > 0))
+                if(simpleCoond || defaultCoond) {
                     afterCheck = true;
-                }                
+                }      
+                console.log(simpleCoond)       
             }
             
             const el = subjects.find(el => el.time.hours == subj.time.hours && el.time.minutes == subj.time.minutes)
             if(el) {
                 if(validateNumerator(el)) {
                     setTimeValid(true)
-                } else {
+                } else {                
                     setTimeValid(false)
-                }
+                }                
             } else if(before.length > 0 && after.length > 0) {
                 if(beforeCheck == true && afterCheck == true) {                    
                     setTimeValid(true)
