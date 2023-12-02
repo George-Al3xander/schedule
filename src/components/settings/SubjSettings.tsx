@@ -1,4 +1,4 @@
-import {useRef, useState } from "react";
+import {useEffect, useRef, useState } from "react";
 import { typeSubjSettingsProps, typeSubject } from "../../types/types"
 
 import { v4 as uuidv4 } from 'uuid';
@@ -6,11 +6,11 @@ import useValid from "../../hooks/useValid";
 
 
 
-const SubjSettings = ({subj,daySubjects, editSubject, index,dayIndex,  editStatus, close, addSubject, time}: typeSubjSettingsProps) => {
+const SubjSettings = ({subj,daySubjects, editSubject, index,dayIndex,  editStatus, close, addSubject, time, status}: typeSubjSettingsProps ) => {
 
     const formRef = useRef<HTMLFormElement>(null)
     const [formData, setFormData] = useState<typeSubject>(subj)
-    const {nameValid, timeValid} = useValid(daySubjects!, formData, time);
+    const {nameValid, timeValid} = useValid(daySubjects!, formData, time, editStatus);
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const name = e.target.name        
@@ -49,11 +49,22 @@ const SubjSettings = ({subj,daySubjects, editSubject, index,dayIndex,  editStatu
         close();
     }
 
+    useEffect(() => {
+       if(status == true && formRef.current) {
+        formRef.current.scrollIntoView({behavior:"smooth"})
+       } 
+    },[status])
+
+
+    if(!status) {
+        return null
+    }
+
 
 
     return(<form onSubmit={(e) => e.preventDefault()}  ref={formRef} className="flex flex-col border-2 border-primary p-2">
         <div key={"setting-form-div"} className="flex flex-col gap-4 pr-4  mb-2 py-4 flex-wrap relative">
-        <input onChange={handleChange} className="p-2 max-w-[40%] rounded"   key={"setting-form-name"} name={`name`}  placeholder="Class name" defaultValue={formData.name} type="text" />
+        <input onChange={handleChange} className="p-2  rounded"   key={"setting-form-name"} name={`name`}  placeholder="Class name" defaultValue={formData.name} type="text" />
         <div  className="flex items-center gap-2">
             <label>Time: </label>
             <span key={`span-time-hours` } className="bg-accent p-2 rounded"><input onChange={handleChange} key={`hours` }  name={`hours`}  defaultValue={formData.time.hours} type="number" min={0} max={23}/>h</span>

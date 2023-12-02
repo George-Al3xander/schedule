@@ -5,7 +5,7 @@ import moment from 'moment'
 
 
 
-const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {    
+const useValid = (subjects: typeSubject[], subj: typeSubject, time: any, editStatus: boolean) => {    
     const [timeValid, setTimeValid] = useState(false)
     const [nameValid, setNameValid] = useState(false)
     const blankValid = new RegExp(/\S/)
@@ -71,12 +71,12 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
                 
                 return status
             })
-            
+           
             let beforeCheck = false;
             let afterCheck = false;            
             if(before.length > 0) {               
                 const beforeItem = before[before.length-1].time;
-                const beforeMinumum = moment(`${beforeItem.hours}:${beforeItem.minutes}`, "h:m").add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes");
+                const beforeMinumum = moment(`${beforeItem.hours}:${beforeItem.minutes}`, "h:m").add(timeBetween.hours, "hours").add(timeBetween.minutes, "minutes");                
                 const timeBetweenBefore = getTimeRemaining(beforeMinumum.toDate(), moment(`${subj.time.hours}:${subj.time.minutes}`, "h:m").toDate());
                 //Checking if timeBefore  is a longer duration than the allowed timeBetween duration
                 const simpleCoond = (timeBetweenBefore.hours == timeBetween.hours && timeBetweenBefore.minutes >= timeBetween.minutes) || (timeBetweenBefore.hours > timeBetween.hours)  
@@ -98,14 +98,14 @@ const useValid = (subjects: typeSubject[], subj: typeSubject, time: any) => {
                 if(simpleCoond || defaultCoond) {
                     afterCheck = true;
                 }      
-                console.log(simpleCoond)       
+                      
             }
             
             const el = subjects.find(el => el.time.hours == subj.time.hours && el.time.minutes == subj.time.minutes)
-            if(el) {
+            if(el && editStatus == false) {
                 if(validateNumerator(el)) {
                     setTimeValid(true)
-                } else {                
+                } else {   
                     setTimeValid(false)
                 }                
             } else if(before.length > 0 && after.length > 0) {

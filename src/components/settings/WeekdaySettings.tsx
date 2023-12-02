@@ -41,12 +41,9 @@ const WeekdaySettings = ({dayIndex,  day,  addSubject, deleteSubject,editSubject
             }   
             <div className="flex py-2">
                {menuShown ? null :  <button onClick={() => setMenuShown(true)} className="mx-auto text-green-600 px-4">Add</button>}   
-            </div>
-        {menuShown ?  
-        <SubjSettings index={currentIndex} editSubject={editSubject} time={time!} daySubjects={daySubjects} addSubject={addSubject}  close={close} editStatus={editStatus} subj={editStatus ? currentSubject : blankSubj}   dayIndex={dayIndex}  />
-        :
-        null
-        }
+            </div>         
+        <SubjSettings status={menuShown} index={currentIndex} editSubject={editSubject} time={time!} daySubjects={daySubjects} addSubject={addSubject}  close={close} editStatus={editStatus} subj={editStatus ? currentSubject : blankSubj}   dayIndex={dayIndex}  />
+        
         </fieldset>
     </>)
 }

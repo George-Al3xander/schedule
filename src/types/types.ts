@@ -33,7 +33,7 @@ export type typeSubjProps = {
     open: any,   
 }
 
-export type typeSubjSettingsProps = {
+export interface typeSubjSettingsProps  {
     subj: typeSubject, 
     index: number
     daySubjects: typeSubject[] | undefined    
@@ -45,7 +45,8 @@ export type typeSubjSettingsProps = {
         breakLength: typeTime,
         classLength: typeTime
     },  
-    editSubject: any
+    editSubject: any,
+    status: boolean
 }
 
 
