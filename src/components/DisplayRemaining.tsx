@@ -1,5 +1,6 @@
 import { useToday } from "../hooks/useToday";
 import { useNow } from "../hooks/useNow";
+import { minutesToHours } from "../utils";
 
 
 
@@ -7,15 +8,9 @@ import { useNow } from "../hooks/useNow";
 const DisplayRemaining = () => {
 
 
+ 
+    const {githnow} =  useNow();
     const today = useToday();
-    const now =  useNow(today);
-    function minutesToHours(totalMinutes: number) {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-      
-        return `${hours} hour${hours != 1 ? "s" : ""} ${minutes} minute${minutes != 1 ? "s" : ""}`;
-      }
-
     const getRemaining = () => {       
         if(now) {
             let total: number;

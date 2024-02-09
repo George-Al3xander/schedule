@@ -8,23 +8,10 @@ import { setSchedule } from "./redux/mainStates";
 import LandingPage from "./components/LandingPage";
 import Dashboard from "./components/Dashboard";
 function App() {
-  const location = useLocation(); 
-  const dispatch = useDispatch();
-  const {schedule} = useSelector((state: RootState) => state.mainStates) 
-  
-  
-  useEffect(() => {   
-    const localStorageItem = JSON.parse(localStorage.getItem('schedule')!);        
-    if(localStorageItem)  {
-      dispatch(setSchedule({schedule: localStorageItem}))
-    }    
-  }, [])
-
-
+  const location = useLocation();  
 
   return (<div className={`w-[min(95%,40rem)] mx-auto py-6 ${location.pathname == "/week" || location.pathname == "/settings"? "min-" : ""}h-[100vh]  bg-gray-100`}>    
-    {schedule ? <Dashboard /> : <LandingPage />
-    }
+    {localStorage.getItem('schedule') ? <Dashboard /> : <LandingPage />}
   </div>    
   )
 }

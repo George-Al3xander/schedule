@@ -1,8 +1,8 @@
 import {Routes, Route} from "react-router-dom"
 import Nav from './Nav';
-import Now from './Now';
-import Today from './Today';
-import Week from './Week';
+import Now from './now tab/Now';
+import Today from './today tab/Today';
+import Week from './week tab/Week';
 import Settings from "./settings/Settings";
 import Menu from "./Menu";
 
