@@ -135,6 +135,28 @@
             }            
         ]},
         {},
-        {}        
+        {"subjects": [
+            {
+                "name": "Programming fundamentals",
+                "time": {
+                    "hours": 9,
+                    "minutes": 30
+                }                
+            },
+            {
+                "name": "Ethics",
+                "time": {
+                    "hours": 11,
+                    "minutes": 0
+                }                
+            },
+            {
+                "name": "Relational Databases",
+                "time": {
+                    "hours": 23,
+                    "minutes": 0
+                }                
+            }
+        ]}        
     ]
 }

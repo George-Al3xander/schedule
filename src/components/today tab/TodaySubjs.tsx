@@ -8,7 +8,10 @@ import TodaySubj from "./TodaySubj"
 const TodaySubjs = () => {
 
     const todaySchedule = useTodaySchedule()
-    if(todaySchedule.length == 0) return <h1>Today's a day off! </h1>
+    if(todaySchedule.length == 0) return <div  className={`p-4 border-[var(--clr-primary)] border-4 rounded text-center text-accent flex flex-col gap-2 bg-green-600`}>
+        <h2 className="font-medium text-lg">"🎉Congrats🎉</h2>
+        <h1 className={`text-3xl font-bold`}>Today's a day off!</h1>
+    </div>
     
     return( <>
         <thead>

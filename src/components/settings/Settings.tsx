@@ -132,19 +132,19 @@ const Settings = () => {
                         <option  value="false">no</option>
                     </select>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-wrap">
                     <div>
                         <label>Break length: </label>
                         <div key={"breakLength-div"} className="flex gap-4">
-                            <span className="bg-accent p-1 rounded"><input name="time-breakLength-hours" onChange={handleChange} defaultValue={formSchedule.time.breakLength.hours} type="number" min={0} max={23}/>h</span>
-                            <span className="bg-accent p-1 rounded"><input name="time-breakLength-minutes" onChange={handleChange} defaultValue={formSchedule.time.breakLength.minutes} type="number" min={0} max={60}/>m</span>
+                            <label htmlFor="time-breakLength-hours"  className="bg-accent p-1 rounded"><input id="time-breakLength-hours"  name="time-breakLength-hours" onChange={handleChange} defaultValue={formSchedule.time.breakLength.hours} type="number" min={0} max={23}/>h</label>
+                            <label htmlFor="time-breakLength-minutes" className="bg-accent p-1 rounded"><input id="time-breakLength-minutes" name="time-breakLength-minutes" onChange={handleChange} defaultValue={formSchedule.time.breakLength.minutes} type="number" min={0} max={60}/>m</label>
                         </div>
                     </div>
                     <div>
                         <label>Class length: </label>
                         <div key={"classLength-div"} className="flex gap-4">
-                            <span className="bg-accent p-1 rounded"><input name="time-classLength-hours" onChange={handleChange} defaultValue={formSchedule.time.classLength.hours} type="number" min={0} max={23}/>h</span>
-                            <span className="bg-accent p-1 rounded"><input name="time-classLength-minutes" onChange={handleChange} defaultValue={formSchedule.time.classLength.minutes} type="number" min={0} max={60}/>m</span>
+                            <label htmlFor="time-classLength-hours" className="bg-accent p-1 rounded"><input id="time-classLength-hours" name="time-classLength-hours" onChange={handleChange} defaultValue={formSchedule.time.classLength.hours} type="number" min={0} max={23}/>h</label>
+                            <label htmlFor="time-classLength-minutes" className="bg-accent p-1 rounded"><input id="time-classLength-minutes" name="time-classLength-minutes" onChange={handleChange} defaultValue={formSchedule.time.classLength.minutes} type="number" min={0} max={60}/>m</label>
                         </div>
                     </div>
                 </div>

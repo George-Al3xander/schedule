@@ -9,7 +9,7 @@ const DisplayRemaining = () => {
 
 
  
-    const {githnow} =  useNow();
+    const {now} =  useNow();
     const today = useToday();
     const getRemaining = () => {       
         if(now) {

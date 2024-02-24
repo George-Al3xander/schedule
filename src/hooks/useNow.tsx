@@ -37,7 +37,8 @@ export const useNow = () => {
         }
     } 
 
-    const getClosest = (today: Date) => {        
+    const getClosest = (today: Date) => {    
+        console.log(12)    
         const currentCheck = todaySchedule!.filter((subj) => isStillContinue(today,subj.time.hours, subj.time.minutes));                   
         if(currentCheck.length > 0) {     
             currentSubject.current = currentCheck[0]  
@@ -61,10 +62,14 @@ export const useNow = () => {
     }
     
     useEffect(() => {
-        if(schedule && schedule.days[new Date().getDay()].subjects) {
-            //const today = moment(microtime.now()).toDate()
-            //getClosest(today)   
+        const todaySubjs = schedule.days[new Date().getDay()].subjects
+        if(schedule && todaySubjs) {           
+            const checkInterval = setInterval(() => getClosest(new Date()),1000 )
+            
+            
+            return() => clearInterval(checkInterval)
         }
+
     },[])
 
     return {now:currentSubject.current, busyStatus:busyStatus.current}

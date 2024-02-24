@@ -12,6 +12,7 @@ const FirstLastSubject = () => {
     const schedule = JSON.parse(localStorage.getItem("schedule")!)
     useEffect(() => {
         if(todaySchedule.length > 0 && schedule) {
+            console.log("Not bad")
             const lastSubjectDate = new Date();
             lastSubjectDate.setHours(todaySchedule[todaySchedule.length - 1].time.hours)
             lastSubjectDate.setMinutes(todaySchedule[todaySchedule.length - 1].time.minutes)            
